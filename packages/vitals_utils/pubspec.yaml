@@ -1,0 +1,22 @@
+name: vitals_utils
+description: Utils cases for Visionable projects
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  rxdart: ^0.27.7
+  dartz: ^0.10.1
+  logger: ^2.4.0
+  dio: ^5.4.3+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  vitals_lint:
+    path: ../vitals_lint

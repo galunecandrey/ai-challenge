@@ -1,0 +1,17 @@
+{
+  "GLOBAL_APP_NAME": "Vitals",
+  "GLOBAL_ERROR_TITLE_GENERIC": "Error",
+  "GLOBAL_ERROR_MSG_GENERIC": "Something went wrong, please try again later",
+  "GLOBAL_ERROR_MSG_INIT": "VitalsApp encountered a problem,\nplease quit the application, stop the application's background process and try again",
+  "GLOBAL_ERROR_MSG_NO_CONNECTION": "No internet connection",
+  "GLOBAL_ERROR_MSG_FAILED_OPEN_WEB_PAGE": "Failed to open the web page",
+  "GLOBAL_ERROR_TITLE_DATA_NOT_SAVED": "Are you sure you want to leave?",
+  "GLOBAL_ALERT_BTN_SAVE_CHANGES": "Save",
+  "GLOBAL_BTN_OK": "Ok",
+  "GLOBAL_BTN_CANCEL": "Cancel",
+  "GLOBAL_BTN_CLOSE": "Close",
+  "GLOBAL_BTN_BACK": "Back",
+  "GLOBAL_BTN_SUBMIT": "Submit",
+  "GLOBAL_GUEST": "Guest",
+  "GLOBAL_ERROR_MSG_WITH_ERROR": "Failed operation:\n{{error}}"
+}

@@ -1,0 +1,46 @@
+import 'dart:ui';
+
+abstract class AppColors {
+  static const Color transparent = Color(0x00000000);
+  static const Color visionableBlue = Color(0xFF042349);
+  static const Color visionableDarkBlue = Color(0xFF031C3A);
+  static const Color visionableMidBlue = Color(0xFF1271EE);
+  static const Color visionableMidBlueWhiteBlended = Color(0xFFe7f1fd);
+  static const Color visionableLightBlue = Color(0xFF00AEEF);
+  static const Color visionableCornflowerBlue = Color(0xFF699BF8);
+  static const Color visionableLightestBlue = Color(0xFFF4F8FF);
+  static const Color visionableBlueGrayBlended = Color(0xFF4E6175);
+  static const Color visionableBlueGreenBlended = Color(0xFF477D94);
+  static const Color visionableBlueWhiteBlended = Color(0xFF1D395B);
+  static const Color visionableBlueLightBlended = Color(0xFF20334B);
+  static const Color visionableCardBlue = Color(0xFF1966FF);
+  static const Color visionableMidGrey = Color(0xFFEEEBEB);
+  static const Color lightGrayBackground = Color(0xFFFAFAFA);
+  static const Color lightBlueBorder = Color(0xFFE8F1FD);
+  static const Color red = Color(0xFFEB1414);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color black = Color(0xFF000000);
+  static const Color blackOpacity0point5 = Color(0x80000000);
+  static const Color blackOpacity38 = Color(0x61000000);
+  static const Color silver = Color(0xFFC3C3C3);
+  static const Color lightestGray = Color(0xFFF2F2F2);
+  static const Color neutralGray = Color(0xFFF7F7F7);
+  static const Color dividerGray = Color(0xFFE2E2E2);
+  static const Color lightGray = Color(0xFFCCCCCC);
+  static const Color coolGrayAccent = Color(0xFF909FA4);
+  static const Color darkGray = Color(0xFF535B5E);
+  static const Color abbeyGray = Color(0xFF50575A);
+  static const Color darkestGray = Color(0xFF323232);
+  static const Color splashLightGray = Color(0xFFEEEEEE);
+  static const Color green = Color(0xFF01B695);
+  static const Color greenAccent = Color(0xFF008746);
+  static const Color lightGreen = Color(0xFFE6F3ED);
+  static const Color visionableGreen = Color(0xFF44C368);
+  static const Color visionableYellow = Color(0xFFDDCD2F);
+  static const Color greenAccentTransparent = Color(0x8001B695);
+  static const Color yellowWarning = Color(0xFFE79F31);
+  static const Color yellow = Color(0xFFFDA40E);
+  static const Color darkShadeGray = Color(0xFF282828);
+  static const Color purple = Color(0xFF652BB3);
+  static const Color hotPink = Color(0xFFC638A9);
+}

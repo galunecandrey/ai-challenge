@@ -1,0 +1,3 @@
+package packages.system_tools.android
+
+rootProject.name = 'system_tools'

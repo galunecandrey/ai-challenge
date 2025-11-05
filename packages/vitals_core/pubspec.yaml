@@ -1,0 +1,40 @@
+name: vitals_core
+description: Core components for Visionable projects
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.2
+  get_it: ^7.7.0
+  injectable: ^2.4.2
+  device_info_plus: ^10.1.0
+  desktop_window: ^0.4.0
+  package_info_plus: ^8.0.0
+  freezed_annotation: ^2.4.1
+  intl: ^0.19.0
+  path: ^1.9.0
+  logger: ^2.4.0
+  dio: ^5.4.3+1
+  retrofit: ^4.1.0
+  openai_dart: ^0.5.4+1
+  system_tools:
+    path: ../system_tools
+  vitals_utils:
+    path: ../vitals_utils
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  injectable_generator: ^2.6.1
+  build_runner: ^2.4.11
+  retrofit_generator: ^8.1.0
+  json_serializable: ^6.8.0
+  freezed: ^2.5.2
+  vitals_lint:
+    path: ../vitals_lint

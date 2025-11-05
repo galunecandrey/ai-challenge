@@ -1,0 +1,152 @@
+#!groovy
+//
+// Job: Android-MeetingSDK-Flutter
+//
+// Build the Flutter Android APK
+//
+// PREREQS:
+//   - JAVA_HOME: C:\Program Files (x86)\Java\jre1.8.0_311
+//   - Android Studio with Android command line tools
+//   - git clone https://github.com/flutter/flutter.git -b stable (C:\Users\Administrator\src)
+//     - add flutter\bin to PATH
+//     - (one time) flutter doctor --android-licenses
+//
+
+@Library('shared-libs') _
+
+pipeline {
+    agent {
+        label 'hana.iocom.com'
+    }
+
+    // triggers {
+    //     // poll every minute
+    //     pollSCM '* * * * *'
+    // }
+
+    environment {
+        BUILD_YEAR = powershell(returnStdout: true, script: "(Get-Date).ToString('yy')").trim()
+
+        BUILD_MONTH = VersionNumber([
+            versionNumberString: '${BUILD_MONTH,X}',
+            worstResultForIncrement: 'SUCCESS'
+        ])
+
+        BUILD_DAY = VersionNumber([
+            versionNumberString: '${BUILD_DAY,X}',
+            worstResultForIncrement: 'SUCCESS'
+        ])
+
+        BUILDS_TODAY = VersionNumber([
+            versionNumberString: '${BUILDS_TODAY}',
+            worstResultForIncrement: 'SUCCESS'
+        ])
+
+        BUILD_VERSION = "${BUILD_YEAR}.${BUILD_MONTH}.${BUILD_DAY}.${BUILDS_TODAY}"
+    }
+
+    options {
+        // timestamps in logs
+        timestamps()
+        
+        // log rotation
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        
+        // build timeout
+        timeout(time: 30, unit: 'MINUTES')
+
+        disableConcurrentBuilds()
+
+        // colorize log output when a step is formatted
+        ansiColor('xterm')
+
+        // skip the default "Declarative: Checkout SCM" step
+        skipDefaultCheckout()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout (
+                    changelog: true,
+                    poll: true,
+                    scm: [
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        extensions: [
+                            [
+                                $class: 'CloneOption',
+                                timeout: 20
+                            ],
+                            [
+                                $class: 'CheckoutOption',
+                                timeout: 20
+                            ],
+                            [
+                                $class: 'CleanBeforeCheckout'
+                            ]//,
+                            // [
+                            //     // pollSCM paths - add to the Jenkins UI configuration in
+                            //     //   "Polling ignores commits in certain paths" - "Included Regions"
+                            //     $class: 'PathRestriction',
+                            //     includedRegions: """
+                            //         android/.*\n
+                            //         example/android/.*
+                            //     """
+                            // ]
+                        ],
+                        userRemoteConfigs: [[
+                            credentialsId: 'jenkins-github',
+                            url: 'git@github.com:visionable-public/FlutterMeetingSDK.git'
+                        ]]
+                    ]
+                )
+            }
+        }
+
+        stage('Init') {
+            steps {
+                script {
+                    currentBuild.displayName = "${BUILD_VERSION}"
+
+                    logInfo()
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                bat """
+                    cd ${WORKSPACE}\\example
+
+                    :: flutter doctor 2&> dev/null?
+
+                    flutter build apk
+                """
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts (
+                    artifacts: """
+                        example\\build\\app\\outputs\\flutter-apk\\app-release.apk
+                    """,
+                    onlyIfSuccessful: true,
+                    defaultExcludes: true,
+                    caseSensitive: true,
+                    followSymlinks: true
+                )
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                setEmailVars()
+                sendEmail()
+            }
+        }
+    }
+}

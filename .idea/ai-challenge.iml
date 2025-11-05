@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/ai_app/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ai_app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ai_app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/i18next/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/i18next/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/i18next/build" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/i18next/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/i18next/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/i18next/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/openai_dart/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/openai_dart/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/openai_dart/build" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/vitals_core/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/vitals_core/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/vitals_core/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
+    <orderEntry type="library" name="Flutter Plugins" level="project" />
+  </component>
+</module>

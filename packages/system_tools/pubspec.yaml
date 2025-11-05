@@ -1,0 +1,31 @@
+name: system_tools
+description: A new Flutter plugin project.
+version: 0.5.0
+publish_to: 'none'
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  vitals_lint:
+    path: ../vitals_lint
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.example.system_tools
+        pluginClass: SystemToolsPlugin
+      ios:
+        pluginClass: SystemToolsPlugin
+      macos:
+        pluginClass: SystemToolsPlugin
+      windows:
+        pluginClass: SystemToolsPluginCApi

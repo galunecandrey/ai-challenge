@@ -1,0 +1,20 @@
+{
+  "DEVICE_ID": "Device ID",
+  "DEVICE_PIN": "Device PIN",
+  "DEVICE_PORT": "Device PORT",
+  "APPOINTMENT_ID": "Appointment ID",
+  "TRENDS_DATA_PERIOD_TITLE": "Trends data period",
+  "TRENDS_DATA_PERIOD_VALUE": "{{field}} s",
+  "RENDERING_QUALITY_TITLE": "Rendering quality",
+  "RENDERING_QUALITY_LOW": "Low(300x200)",
+  "RENDERING_QUALITY_MEDIUM": "Medium(600x400)",
+  "RENDERING_QUALITY_HIGH": "High(1200x800)",
+  "RENDERING_ORIENTATION_TITLE": "Rendering orientation",
+  "RENDERING_ORIENTATION_LANDSCAPE": "Landscape",
+  "RENDERING_ORIENTATION_PORTRAIT": "Portrait",
+  "CONNECT_BTN": "Connect",
+  "DISCONNECT_BTN": "Disconnect",
+  "START_BTN": "Start",
+  "STOP_BTN": "Stop",
+  "HOME_ERROR_MSG_INVALID_APPOINTMENT_ID": "Please enter a valid ID"
+}
