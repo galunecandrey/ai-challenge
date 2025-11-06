@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:injectable/injectable.dart';
 import 'package:openai_dart/openai_dart.dart';
 import 'package:vitals_core/src/api/providers/date_time_provider.dart';
 import 'package:vitals_core/src/api/repositories/ai_repository.dart' show AIRepository;
 import 'package:vitals_core/src/impl/storages/messages_storage.dart' show MessagesStorage;
 import 'package:vitals_core/src/model/message/message.dart';
+import 'package:vitals_core/src/model/message/message_data.dart';
+import 'package:vitals_core/src/utils/const/prompts.dart';
 import 'package:vitals_utils/vitals_utils.dart';
 
 @LazySingleton(as: AIRepository)
@@ -38,6 +42,9 @@ final class AIRepositoryImpl implements AIRepository {
         request: CreateChatCompletionRequest(
           model: const ChatCompletionModel.modelId('gpt-5'),
           messages: [
+            const ChatCompletionMessage.system(
+              content: kSystemJSONSchemaPrompt,
+            ),
             ..._messagesStorage.get().getOrElse(() => List.unmodifiable([])).map((m) => m.toChatCompletionMessage),
             ChatCompletionMessage.user(
               content: ChatCompletionUserMessageContent.string(text),
@@ -56,6 +63,16 @@ final class AIRepositoryImpl implements AIRepository {
                 id: _dateTimeProvider.current.millisecondsSinceEpoch,
                 role: MessageRoles.assistant,
                 text: it.message.content.orEmpty,
+                data: _operationService
+                    .safeSyncOp(
+                      () => MessageData.fromJson(
+                        jsonDecode(it.message.content.orEmpty) as Map<String, dynamic>,
+                      ),
+                    )
+                    .fold(
+                      (l) => null,
+                      (r) => r,
+                    ),
               ),
             ),
             ..._messagesStorage.get().getOrElse(() => List.unmodifiable([])),

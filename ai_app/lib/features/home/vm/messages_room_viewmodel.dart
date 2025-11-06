@@ -2,6 +2,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:vitals_arch/vitals_arch.dart' show ViewModel;
 import 'package:vitals_core/vitals_core.dart' show AIRepository, Message;
+import 'package:vitals_sdk_example/features/home/model/message_item.dart';
 import 'package:vitals_utils/vitals_utils.dart';
 
 const kMaxQuickRepliesNumber = 6;
@@ -12,9 +13,25 @@ class MessagesRoomViewModel extends ViewModel {
 
   late final _items = stateOf<List<Message>>(List.unmodifiable([]));
 
-  List<Message> get items => _items.value;
+  late final _isWaiting = stateOf<bool>(false);
 
-  Stream<List<Message>> get itemsStream => _items(sendFirst: true);
+  bool get isWaiting => _isWaiting.value;
+
+  Stream<bool> get isWaitingStream => _isWaiting(sendFirst: true);
+
+  List<MessageListItemModel> get items => [
+        if (isWaiting) const MessageListItemModel.waiting(),
+        ..._items.value.map((r) => MessageListItemModel.item(model: r)),
+      ];
+
+  Stream<List<MessageListItemModel>> get itemsStream => Rx.combineLatest2(
+        _items(sendFirst: true),
+        _isWaiting(sendFirst: true),
+        (list, isProgress) => [
+          if (isProgress) const MessageListItemModel.waiting(),
+          ...list.map((r) => MessageListItemModel.item(model: r)),
+        ],
+      );
 
   MessagesRoomViewModel(this._repository) {
     _repository.getHistoryStream(sendFirst: true).listen((r) {
@@ -22,5 +39,10 @@ class MessagesRoomViewModel extends ViewModel {
     }).cancelable(cancelable);
   }
 
-  void sendMessage(String text) => _repository.sendText(text);
+  void sendMessage(String text) {
+    _isWaiting.add(true);
+    _repository.sendText(text).then((v) {
+      _isWaiting.add(false);
+    });
+  }
 }
