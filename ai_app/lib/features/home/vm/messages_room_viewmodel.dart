@@ -1,7 +1,7 @@
 // ignore_for_file: close_sinks
 import 'package:injectable/injectable.dart';
 import 'package:vitals_arch/vitals_arch.dart' show ViewModel;
-import 'package:vitals_core/vitals_core.dart' show AIRepository, DateTimeProvider, Message;
+import 'package:vitals_core/vitals_core.dart' show AIRepository, Message;
 import 'package:vitals_utils/vitals_utils.dart';
 
 const kMaxQuickRepliesNumber = 6;
