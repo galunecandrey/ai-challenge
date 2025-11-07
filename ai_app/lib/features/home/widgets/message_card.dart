@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:vitals_core/vitals_core.dart';
+import 'package:vitals_sdk_example/features/home/model/message_item.dart';
+import 'package:vitals_sdk_example/features/home/widgets/waiting_widget.dart';
 import 'package:vitals_sdk_example/theme/colors.dart';
 import 'package:vitals_sdk_example/theme/vis_theme_mode_enum.dart';
 
@@ -11,7 +11,7 @@ class MessageCard extends StatelessWidget {
     super.key,
   });
 
-  final Message message;
+  final MessageListItemModel message;
   final VisThemeMode themeMode;
 
   @override
@@ -33,13 +33,21 @@ class MessageCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      message.text,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: message.isUser || themeMode == VisThemeMode.dark ? null : AppColors.black,
-                      ),
-                    ),
+                    switch (message) {
+                      MessageWaiting() => const WaitingCallLabel(),
+                      MessageItem(model: final data) => Text(
+                          message.isUser || data.data == null
+                              ? data.text
+                              : 'Tag: ${data.data?.tag}\n'
+                                  'Title: ${data.data?.title}\n'
+                                  'Answer: ${data.data?.answer}\n'
+                                  'Time: ${data.data?.time}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: message.isUser || themeMode == VisThemeMode.dark ? null : AppColors.black,
+                          ),
+                        ),
+                    }
                   ],
                 ),
               ),

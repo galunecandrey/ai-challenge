@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vitals_arch/vitals_arch.dart';
-import 'package:vitals_core/vitals_core.dart' show DateTimeProvider, Message;
+import 'package:vitals_core/vitals_core.dart' show DateTimeProvider;
+import 'package:vitals_sdk_example/features/home/model/message_item.dart';
 import 'package:vitals_sdk_example/features/home/vm/messages_room_viewmodel.dart';
 import 'package:vitals_sdk_example/features/home/widgets/message_card.dart';
 import 'package:vitals_sdk_example/theme/theme.dart';
@@ -26,7 +27,7 @@ class MessagesListWidget extends StatelessWidget {
           buttonItems: <ContextMenuButtonItem>[...state.contextMenuButtonItems],
         ),
       ),
-      child: StreamBuilder<List<Message>>(
+      child: StreamBuilder<List<MessageListItemModel>>(
         initialData: vm.items,
         stream: vm.itemsStream,
         builder: (context, messagesSnapshot) => StreamBuilder<DateTime>(

@@ -19,6 +19,7 @@ mixin _$Message {
   int get id => throw _privateConstructorUsedError;
   MessageRoles get role => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
+  MessageData? get data => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MessageCopyWith<Message> get copyWith => throw _privateConstructorUsedError;
@@ -29,7 +30,9 @@ abstract class $MessageCopyWith<$Res> {
   factory $MessageCopyWith(Message value, $Res Function(Message) then) =
       _$MessageCopyWithImpl<$Res, Message>;
   @useResult
-  $Res call({int id, MessageRoles role, String text});
+  $Res call({int id, MessageRoles role, String text, MessageData? data});
+
+  $MessageDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -48,6 +51,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? id = null,
     Object? role = null,
     Object? text = null,
+    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -62,7 +66,23 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as MessageData?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $MessageDataCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $MessageDataCopyWith<$Res>(_value.data!, (value) {
+      return _then(_value.copyWith(data: value) as $Val);
+    });
   }
 }
 
@@ -73,7 +93,10 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
       __$$MessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, MessageRoles role, String text});
+  $Res call({int id, MessageRoles role, String text, MessageData? data});
+
+  @override
+  $MessageDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -90,6 +113,7 @@ class __$$MessageImplCopyWithImpl<$Res>
     Object? id = null,
     Object? role = null,
     Object? text = null,
+    Object? data = freezed,
   }) {
     return _then(_$MessageImpl(
       id: null == id
@@ -104,6 +128,10 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as MessageData?,
     ));
   }
 }
@@ -112,7 +140,7 @@ class __$$MessageImplCopyWithImpl<$Res>
 
 class _$MessageImpl implements _Message {
   const _$MessageImpl(
-      {required this.id, required this.role, required this.text});
+      {required this.id, required this.role, required this.text, this.data});
 
   @override
   final int id;
@@ -120,10 +148,12 @@ class _$MessageImpl implements _Message {
   final MessageRoles role;
   @override
   final String text;
+  @override
+  final MessageData? data;
 
   @override
   String toString() {
-    return 'Message(id: $id, role: $role, text: $text)';
+    return 'Message(id: $id, role: $role, text: $text, data: $data)';
   }
 
   @override
@@ -133,11 +163,12 @@ class _$MessageImpl implements _Message {
             other is _$MessageImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.role, role) || other.role == role) &&
-            (identical(other.text, text) || other.text == text));
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.data, data) || other.data == data));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, role, text);
+  int get hashCode => Object.hash(runtimeType, id, role, text, data);
 
   @JsonKey(ignore: true)
   @override
@@ -150,7 +181,8 @@ abstract class _Message implements Message {
   const factory _Message(
       {required final int id,
       required final MessageRoles role,
-      required final String text}) = _$MessageImpl;
+      required final String text,
+      final MessageData? data}) = _$MessageImpl;
 
   @override
   int get id;
@@ -158,6 +190,8 @@ abstract class _Message implements Message {
   MessageRoles get role;
   @override
   String get text;
+  @override
+  MessageData? get data;
   @override
   @JsonKey(ignore: true)
   _$$MessageImplCopyWith<_$MessageImpl> get copyWith =>

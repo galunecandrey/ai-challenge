@@ -110,7 +110,7 @@ class PopupButtonState extends State<PopupButton> {
 class _Popup extends StatelessWidget {
   const _Popup({
     required this.route,
-    //ignore: unused_element
+    //ignore: unused_element_parameter
     super.key,
   });
 

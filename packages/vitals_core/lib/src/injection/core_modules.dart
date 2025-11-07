@@ -5,7 +5,6 @@ import 'package:openai_dart/openai_dart.dart';
 
 //ignore:depend_on_referenced_packages
 import 'package:package_info_plus_platform_interface/package_info_platform_interface.dart';
-import 'package:vitals_utils/vitals_utils.dart' show error;
 
 @module
 abstract class CoreModules {
