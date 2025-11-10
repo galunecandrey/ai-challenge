@@ -43,7 +43,7 @@ final class AIRepositoryImpl implements AIRepository {
           model: const ChatCompletionModel.modelId('gpt-5'),
           messages: [
             const ChatCompletionMessage.system(
-              content: kSystemJSONSchemaPrompt,
+              content: kSystemCommunicationPrompt,
             ),
             ..._messagesStorage.get().getOrElse(() => List.unmodifiable([])).map((m) => m.toChatCompletionMessage),
             ChatCompletionMessage.user(
