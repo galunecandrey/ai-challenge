@@ -1,7 +1,7 @@
 // ignore_for_file: close_sinks
 import 'package:injectable/injectable.dart';
 import 'package:vitals_arch/vitals_arch.dart' show ViewModel;
-import 'package:vitals_core/vitals_core.dart' show AIRepository, Message;
+import 'package:vitals_core/vitals_core.dart' show AIAgents, AIRepository;
 import 'package:vitals_sdk_example/features/home/model/message_item.dart';
 import 'package:vitals_utils/vitals_utils.dart';
 
@@ -11,21 +11,19 @@ const kMaxQuickRepliesNumber = 6;
 class MessagesRoomViewModel extends ViewModel {
   final AIRepository _repository;
 
-  late final _items = stateOf<List<Message>>(List.unmodifiable([]));
-
   late final _isWaiting = stateOf<bool>(false);
 
   bool get isWaiting => _isWaiting.value;
 
   Stream<bool> get isWaitingStream => _isWaiting(sendFirst: true);
 
-  List<MessageListItemModel> get items => [
+  List<MessageListItemModel> getContextForAgent(AIAgents agent) => [
         if (isWaiting) const MessageListItemModel.waiting(),
-        ..._items.value.map((r) => MessageListItemModel.item(model: r)),
+        ..._repository.getAIAgentContext(agent).getOrElse(() => []).map((r) => MessageListItemModel.item(model: r)),
       ];
 
-  Stream<List<MessageListItemModel>> get itemsStream => Rx.combineLatest2(
-        _items(sendFirst: true),
+  Stream<List<MessageListItemModel>> getContextStreamForAgent(AIAgents agent) => Rx.combineLatest2(
+        _repository.getAIAgentContextStream(agent, sendFirst: true).map((r) => r.getOrElse(() => [])),
         _isWaiting(sendFirst: true),
         (list, isProgress) => [
           if (isProgress) const MessageListItemModel.waiting(),
@@ -33,15 +31,11 @@ class MessagesRoomViewModel extends ViewModel {
         ],
       );
 
-  MessagesRoomViewModel(this._repository) {
-    _repository.getHistoryStream(sendFirst: true).listen((r) {
-      r.forEach(_items.add);
-    }).cancelable(cancelable);
-  }
+  MessagesRoomViewModel(this._repository);
 
   void sendMessage(String text) {
     _isWaiting.add(true);
-    _repository.sendText(text).then((v) {
+    _repository.sendRequestToAll(text).then((v) {
       _isWaiting.add(false);
     });
   }

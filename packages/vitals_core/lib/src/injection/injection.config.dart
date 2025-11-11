@@ -19,6 +19,7 @@ import 'package:openai_dart/openai_dart.dart' as _i948;
 import 'package:package_info_plus_platform_interface/package_info_platform_interface.dart'
     as _i490;
 import 'package:vitals_core/src/api/handlers/error_handler.dart' as _i676;
+import 'package:vitals_core/src/api/providers/ai_agent_provider.dart' as _i970;
 import 'package:vitals_core/src/api/providers/date_time_provider.dart' as _i804;
 import 'package:vitals_core/src/api/providers/lifecycle_events_provider.dart'
     as _i182;
@@ -27,6 +28,8 @@ import 'package:vitals_core/src/api/repositories/ai_repository.dart' as _i754;
 import 'package:vitals_core/src/impl/log/log.dart' as _i514;
 import 'package:vitals_core/src/impl/operation/operation_service_impl.dart'
     as _i579;
+import 'package:vitals_core/src/impl/providers/ai_agent_provider_impl.dart'
+    as _i90;
 import 'package:vitals_core/src/impl/providers/date_time_provider_impl.dart'
     as _i587;
 import 'package:vitals_core/src/impl/providers/lifecycle_events_provider_impl.dart'
@@ -35,6 +38,7 @@ import 'package:vitals_core/src/impl/providers/platform_provider_impl.dart'
     as _i291;
 import 'package:vitals_core/src/impl/repositories/ai_repository_impl.dart'
     as _i452;
+import 'package:vitals_core/src/impl/storages/ai_agent_storage.dart' as _i532;
 import 'package:vitals_core/src/impl/storages/messages_storage.dart' as _i678;
 import 'package:vitals_core/src/injection/core_modules.dart' as _i900;
 import 'package:vitals_core/src/injection/defines.dart' as _i821;
@@ -105,16 +109,23 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i678.MessagesStorage(gh<_i865.OperationService>()),
       dispose: (i) => i.close(),
     );
-    gh.lazySingleton<bool>(
-      () => defines.isTestMode(gh<_i997.PlatformProvider>()),
-      instanceName: 'isTestMode',
+    gh.lazySingleton<_i532.AIAgentStorage>(
+      () => _i532.AIAgentStorage(gh<_i865.OperationService>()),
+      dispose: (i) => i.close(),
     );
-    gh.lazySingleton<_i754.AIRepository>(() => _i452.AIRepositoryImpl(
+    gh.lazySingleton<_i970.AIAgentProvider>(() => _i90.AIRepositoryImpl(
           gh<_i948.OpenAIClient>(),
           gh<_i678.MessagesStorage>(),
           gh<_i865.OperationService>(),
           gh<_i804.DateTimeProvider>(),
+          gh<_i532.AIAgentStorage>(),
         ));
+    gh.lazySingleton<_i754.AIRepository>(
+        () => _i452.AIRepositoryImpl(gh<_i970.AIAgentProvider>()));
+    gh.lazySingleton<bool>(
+      () => defines.isTestMode(gh<_i997.PlatformProvider>()),
+      instanceName: 'isTestMode',
+    );
     gh.lazySingleton<bool>(
       () => defines.shouldLog(isTestMode: gh<bool>(instanceName: 'isTestMode')),
       instanceName: 'shouldLog',

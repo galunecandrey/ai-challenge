@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitals_arch/vitals_arch.dart';
-import 'package:vitals_core/vitals_core.dart' show DateTimeProvider;
+import 'package:vitals_core/vitals_core.dart' show AIAgents, DateTimeProvider;
 import 'package:vitals_sdk_example/features/home/model/message_item.dart';
 import 'package:vitals_sdk_example/features/home/vm/messages_room_viewmodel.dart';
 import 'package:vitals_sdk_example/features/home/widgets/message_card.dart';
@@ -8,8 +8,11 @@ import 'package:vitals_sdk_example/theme/theme.dart';
 
 class MessagesListWidget extends StatelessWidget {
   const MessagesListWidget({
+    required this.agent,
     super.key,
   });
+
+  final AIAgents agent;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +31,8 @@ class MessagesListWidget extends StatelessWidget {
         ),
       ),
       child: StreamBuilder<List<MessageListItemModel>>(
-        initialData: vm.items,
-        stream: vm.itemsStream,
+        initialData: vm.getContextForAgent(agent),
+        stream: vm.getContextStreamForAgent(agent),
         builder: (context, messagesSnapshot) => StreamBuilder<DateTime>(
           stream: context
               .read<DateTimeProvider>()
