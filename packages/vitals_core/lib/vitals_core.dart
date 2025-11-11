@@ -5,6 +5,7 @@ export 'package:vitals_core/src/api/providers/lifecycle_events_provider.dart';
 export 'package:vitals_core/src/api/providers/platform_provider.dart';
 export 'package:vitals_core/src/api/repositories/ai_repository.dart';
 export 'package:vitals_core/src/injection/injection.dart';
+export 'package:vitals_core/src/model/enums/ai_agents_enum.dart';
 export 'package:vitals_core/src/model/error/exception.dart';
 export 'package:vitals_core/src/model/message/message.dart';
 export 'package:vitals_core/src/model/message/message_data.dart';
