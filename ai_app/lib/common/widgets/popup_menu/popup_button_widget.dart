@@ -62,6 +62,7 @@ class PopupButtonState extends State<PopupButton> {
     _subscription = context.read<PlatformProvider>().stream((p) => p.size).distinct().listen((event) {
       if (isMenuOpened) {
         isMenuOpened = false;
+        //ignore: use_build_context_synchronously
         Navigator.of(context).pop();
       }
     });

@@ -1,25 +1,78 @@
+import 'package:vitals_core/src/model/ai_agent_options/ai_agent_options.dart';
 import 'package:vitals_core/src/utils/const/prompts.dart';
 
-enum AIAgents {
-  simple(key: 'simple', name: 'gpt-5'),
-  simpleWithByStep(key: 'simpleWithByStep', name: 'By Step', systemPrompt: kSystemStepByStep),
-  simpleGPT5mini(key: 'simpleGPT5mini', model: 'gpt-5-mini'),
-  simpleGPT5nano(key: 'simpleGPT5nano', model: 'gpt-5-nano'),
-  simpleGPT4_1(key: 'simpleGPT4_1', model: 'gpt-4.1'),
-  physicist(key: 'physicist', name: 'Physicist', systemPrompt: kSystemPhysicist),
-  mathematician(key: 'mathematician', name: 'Mathematician', systemPrompt: kSystemMathematician),
-  philosopher(key: 'philosopher', name: 'Philosopher', systemPrompt: kSystemPhilosopher),
-  multirole(key: 'multirole', name: 'Multi', systemPrompt: kSystemMulti);
+enum AIAgentsOptions {
+  simple(
+    options: AIAgentOptions(
+      key: 'simple',
+      name: 'gpt-5',
+      model: 'gpt-5',
+    ),
+  ),
+  simpleWithByStep(
+    options: AIAgentOptions(
+      key: 'simpleWithByStep',
+      name: 'By Step',
+      systemPrompt: kSystemStepByStep,
+      model: 'gpt-5',
+    ),
+  ),
+  simpleGPT5mini(
+    options: AIAgentOptions(
+      key: 'simpleGPT5mini',
+      name: 'gpt-5-mini',
+      model: 'gpt-5-mini',
+    ),
+  ),
+  simpleGPT5nano(
+    options: AIAgentOptions(
+      key: 'simpleGPT5nano',
+      name: 'gpt-5-nano',
+      model: 'gpt-5-nano',
+    ),
+  ),
+  simpleGPT4_1(
+    options: AIAgentOptions(
+      key: 'simpleGPT4_1',
+      name: 'gpt-4.1',
+    ),
+  ),
+  physicist(
+    options: AIAgentOptions(
+      key: 'physicist',
+      name: 'Physicist',
+      systemPrompt: kSystemPhysicist,
+      model: 'gpt-5',
+    ),
+  ),
+  mathematician(
+    options: AIAgentOptions(
+      key: 'mathematician',
+      name: 'Mathematician',
+      systemPrompt: kSystemMathematician,
+      model: 'gpt-5',
+    ),
+  ),
+  philosopher(
+    options: AIAgentOptions(
+      key: 'philosopher',
+      name: 'Philosopher',
+      systemPrompt: kSystemPhilosopher,
+      model: 'gpt-5',
+    ),
+  ),
+  multirole(
+    options: AIAgentOptions(
+      key: 'multirole',
+      name: 'Multi',
+      systemPrompt: kSystemMulti,
+      model: 'gpt-5',
+    ),
+  );
 
-  final String key;
-  final String? name;
-  final String? systemPrompt;
-  final String model;
+  final AIAgentOptions options;
 
-  const AIAgents({
-    required this.key,
-    this.name,
-    this.systemPrompt,
-    this.model = 'gpt-5',
+  const AIAgentsOptions({
+    required this.options,
   });
 }

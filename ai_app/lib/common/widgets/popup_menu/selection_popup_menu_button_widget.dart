@@ -97,7 +97,7 @@ class SelectionPopupMenuButton<T> extends StatelessWidget {
                         decoration: snapshot.data == element
                             ? BoxDecoration(
                                 color: menuStyle.resolve(
-                                  flat: AppColors.visionableMidBlue.withOpacity(0.1),
+                                  flat: AppColors.visionableMidBlue.withValues(alpha: 0.1),
                                   outlined: AppColors.lightestGray,
                                 ),
                                 borderRadius: BorderRadius.circular(3),

@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
         unawaited(
           getIt<VitalsRouter>().replaceAll(
             [
-              const MessagesRoomScreenRoute(),
+              const HomeScreenRoute(),
             ],
           ),
         );

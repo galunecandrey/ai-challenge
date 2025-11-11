@@ -1,10 +1,12 @@
 export 'package:openai_dart/openai_dart.dart';
+export 'package:vitals_core/src/ai/ai_agent.dart';
 export 'package:vitals_core/src/api/handlers/error_handler.dart';
+export 'package:vitals_core/src/api/providers/ai_agent_provider.dart';
 export 'package:vitals_core/src/api/providers/date_time_provider.dart';
 export 'package:vitals_core/src/api/providers/lifecycle_events_provider.dart';
 export 'package:vitals_core/src/api/providers/platform_provider.dart';
-export 'package:vitals_core/src/api/repositories/ai_repository.dart';
 export 'package:vitals_core/src/injection/injection.dart';
+export 'package:vitals_core/src/model/ai_agent_options/ai_agent_options.dart';
 export 'package:vitals_core/src/model/enums/ai_agents_enum.dart';
 export 'package:vitals_core/src/model/error/exception.dart';
 export 'package:vitals_core/src/model/message/message.dart';

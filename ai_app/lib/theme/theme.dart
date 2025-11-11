@@ -45,7 +45,7 @@ class AppTheme {
       ),
       sliderTheme: SliderThemeData(
         activeTrackColor: AppColors.visionableLightBlue,
-        inactiveTrackColor: AppColors.visionableLightBlue.withOpacity(0.15),
+        inactiveTrackColor: AppColors.visionableLightBlue.withValues(alpha: 0.15),
         thumbColor: AppColors.white,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8.0),
         trackHeight: 5,
