@@ -19,7 +19,7 @@ class VitalsRouter extends $VitalsRouter {
       path: '/',
     ),
     AutoRoute(
-      page: MessagesRoomScreenRoute.page,
+      page: HomeScreenRoute.page,
       path: '/home',
     ),
   ];

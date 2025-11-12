@@ -24,7 +24,6 @@ import 'package:vitals_core/src/api/providers/date_time_provider.dart' as _i804;
 import 'package:vitals_core/src/api/providers/lifecycle_events_provider.dart'
     as _i182;
 import 'package:vitals_core/src/api/providers/platform_provider.dart' as _i997;
-import 'package:vitals_core/src/api/repositories/ai_repository.dart' as _i754;
 import 'package:vitals_core/src/impl/log/log.dart' as _i514;
 import 'package:vitals_core/src/impl/operation/operation_service_impl.dart'
     as _i579;
@@ -36,8 +35,6 @@ import 'package:vitals_core/src/impl/providers/lifecycle_events_provider_impl.da
     as _i163;
 import 'package:vitals_core/src/impl/providers/platform_provider_impl.dart'
     as _i291;
-import 'package:vitals_core/src/impl/repositories/ai_repository_impl.dart'
-    as _i452;
 import 'package:vitals_core/src/impl/storages/ai_agent_storage.dart' as _i532;
 import 'package:vitals_core/src/impl/storages/messages_storage.dart' as _i678;
 import 'package:vitals_core/src/injection/core_modules.dart' as _i900;
@@ -115,13 +112,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i970.AIAgentProvider>(() => _i90.AIRepositoryImpl(
           gh<_i948.OpenAIClient>(),
-          gh<_i678.MessagesStorage>(),
           gh<_i865.OperationService>(),
           gh<_i804.DateTimeProvider>(),
-          gh<_i532.AIAgentStorage>(),
         ));
-    gh.lazySingleton<_i754.AIRepository>(
-        () => _i452.AIRepositoryImpl(gh<_i970.AIAgentProvider>()));
     gh.lazySingleton<bool>(
       () => defines.isTestMode(gh<_i997.PlatformProvider>()),
       instanceName: 'isTestMode',

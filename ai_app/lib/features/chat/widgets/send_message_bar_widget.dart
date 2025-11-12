@@ -4,7 +4,7 @@ import 'package:vitals_core/vitals_core.dart' as vf show PlatformProvider;
 
 //import 'package:vitals_sdk_example/common/localization/localizations.dart' show BuildContextExt, CommonTranslationKeys;
 import 'package:vitals_sdk_example/common/widgets/text_field/vis_text_field.dart' show VisTextField;
-import 'package:vitals_sdk_example/features/home/vm/messages_room_viewmodel.dart' show MessagesRoomViewModel;
+import 'package:vitals_sdk_example/features/chat/vm/chat_room_viewmodel.dart';
 import 'package:vitals_sdk_example/theme/colors.dart' show AppColors;
 import 'package:vitals_sdk_example/theme/text_styles.dart' show TextStyles;
 import 'package:vitals_utils/vitals_utils.dart';
@@ -84,7 +84,7 @@ class _SendMessageBarWidgetState extends State<SendMessageBarWidget> {
 
   void _send(BuildContext context, String text) {
     if (text.isNotBlank) {
-      context.read<MessagesRoomViewModel>().sendMessage(text);
+      context.read<ChatRoomViewModel>().sendMessage(text);
       _controller.clear();
       _focusNode.requestFocus();
     }

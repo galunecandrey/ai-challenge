@@ -20,8 +20,10 @@ import 'package:vitals_sdk_example/common/localization/translation_provider.dart
     as _i661;
 import 'package:vitals_sdk_example/common/utils/vitals_system_tray_manager.dart'
     as _i870;
-import 'package:vitals_sdk_example/features/home/vm/messages_room_viewmodel.dart'
-    as _i512;
+import 'package:vitals_sdk_example/features/chat/vm/chat_room_viewmodel.dart'
+    as _i58;
+import 'package:vitals_sdk_example/features/home/vm/home_viewmodel.dart'
+    as _i888;
 import 'package:vitals_sdk_example/features/init/initializer.dart' as _i85;
 import 'package:vitals_sdk_example/router/router.dart' as _i126;
 import 'package:vitals_sdk_example/router/vitals_router.dart' as _i828;
@@ -41,14 +43,22 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final dIModule = _$DIModule();
     final visRouterModule = _$VisRouterModule();
+    gh.factory<_i888.HomeViewModel>(() => _i888.HomeViewModel());
     gh.lazySingleton<_i878.GetIt>(() => dIModule.di);
     gh.lazySingleton<_i828.VitalsRouter>(() => visRouterModule.router);
+    gh.factoryParam<_i58.ChatRoomViewModel, _i479.AIAgentOptions?, double?>((
+      options,
+      temperature,
+    ) =>
+        _i58.ChatRoomViewModel(
+          gh<_i479.AIAgentProvider>(),
+          options,
+          temperature,
+        ));
     gh.lazySingleton<_i870.VitalsSystemTrayManager>(
         () => _i870.VitalsSystemTrayManager(gh<_i479.PlatformProvider>()));
     gh.lazySingleton<_i391.LocalizationDataSource>(
         () => _i775.VisLocalizationDataSource());
-    gh.factory<_i512.MessagesRoomViewModel>(
-        () => _i512.MessagesRoomViewModel(gh<_i479.AIRepository>()));
     gh.lazySingleton<_i85.Initializer>(() => _i85.Initializer(
           gh<_i878.GetIt>(),
           gh<_i865.OperationService>(),

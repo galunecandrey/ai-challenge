@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vitals_sdk_example/features/home/model/message_item.dart';
-import 'package:vitals_sdk_example/features/home/widgets/waiting_widget.dart';
+import 'package:vitals_sdk_example/features/chat/model/message_item.dart';
+import 'package:vitals_sdk_example/features/chat/widgets/waiting_widget.dart';
 import 'package:vitals_sdk_example/theme/colors.dart';
 import 'package:vitals_sdk_example/theme/vis_theme_mode_enum.dart';
 
@@ -47,7 +47,7 @@ class MessageCard extends StatelessWidget {
                             color: message.isUser || themeMode == VisThemeMode.dark ? null : AppColors.black,
                           ),
                         ),
-                    }
+                    },
                   ],
                 ),
               ),
