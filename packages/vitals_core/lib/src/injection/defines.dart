@@ -28,8 +28,15 @@ abstract class Defines {
 
   @lazySingleton
   @Named('AIKey')
-  String get firebaseApiKeyAndroid => const String.fromEnvironment(
-    'AI_KEY',
-    defaultValue: 'none',
-  );
+  String get openAIKey => const String.fromEnvironment(
+        'AI_KEY',
+        defaultValue: 'none',
+      );
+
+  @lazySingleton
+  @Named('huggingfaceAIKey')
+  String get huggingfaceAIKey => const String.fromEnvironment(
+        'HUGGINGFACE_AI_KEY',
+        defaultValue: 'none',
+      );
 }

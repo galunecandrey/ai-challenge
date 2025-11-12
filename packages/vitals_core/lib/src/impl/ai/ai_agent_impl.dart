@@ -85,16 +85,16 @@ final class AIAgentImpl extends Disposable implements AIAgent {
             id: _dateTimeProvider.current.millisecondsSinceEpoch,
             role: MessageRoles.assistant,
             text: it.message.content.orEmpty,
-            data: _operationService
-                .safeSyncOp(
-                  () => MessageData.fromJson(
-                    jsonDecode(it.message.content.orEmpty) as Map<String, dynamic>,
-                  ),
-                )
-                .fold(
-                  (l) => null,
-                  (r) => r,
-                ),
+            // data: _operationService
+            //     .safeSyncOp(
+            //       () => MessageData.fromJson(
+            //         jsonDecode(it.message.content.orEmpty) as Map<String, dynamic>,
+            //       ),
+            //     )
+            //     .fold(
+            //       (l) => null,
+            //       (r) => r,
+            //     ),
           ),
         );
         _context.add(

@@ -8,11 +8,11 @@ import 'package:vitals_sdk_example/features/chat/widgets/send_message_bar_widget
 class ChatRoomScreen extends Binder<ChatRoomViewModel> {
   const ChatRoomScreen({
     required AIAgentOptions options,
-    required double temperature,
+    required AIAgentTypes type,
     super.key,
   }) : super(
           param1: options,
-          param2: temperature,
+          param2: type,
         );
 
   @override

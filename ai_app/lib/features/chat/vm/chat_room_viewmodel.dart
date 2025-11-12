@@ -1,7 +1,7 @@
 // ignore_for_file: close_sinks
 import 'package:injectable/injectable.dart';
 import 'package:vitals_arch/vitals_arch.dart' show ViewModel;
-import 'package:vitals_core/vitals_core.dart' show AIAgent, AIAgentOptions, AIAgentProvider;
+import 'package:vitals_core/vitals_core.dart' show AIAgent, AIAgentOptions, AIAgentProvider, AIAgentTypes;
 import 'package:vitals_sdk_example/features/chat/model/message_item.dart' show MessageListItemModel;
 import 'package:vitals_utils/vitals_utils.dart';
 
@@ -11,8 +11,6 @@ const kMaxQuickRepliesNumber = 6;
 class ChatRoomViewModel extends ViewModel {
   late AIAgent _agent;
   late final _isWaiting = stateOf<bool>(false);
-
-  final double _temperature;
 
   bool get isWaiting => _isWaiting.value;
 
@@ -35,9 +33,9 @@ class ChatRoomViewModel extends ViewModel {
   ChatRoomViewModel(
     AIAgentProvider provider,
     @factoryParam AIAgentOptions? options,
-    @factoryParam double? temperature,
-  ) : _temperature = temperature! {
-    _agent = provider.get(options!);
+    @factoryParam AIAgentTypes? type,
+  ) {
+    _agent = provider.get(options!, type: type!);
   }
 
   void sendMessage(String text) {
@@ -45,7 +43,6 @@ class ChatRoomViewModel extends ViewModel {
     _agent
         .sendRequest(
       text,
-      temperature: _temperature,
       isKeepContext: false,
     )
         .then((v) {

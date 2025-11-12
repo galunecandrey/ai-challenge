@@ -1,4 +1,5 @@
 import 'package:vitals_core/src/model/ai_agent_options/ai_agent_options.dart';
+import 'package:vitals_core/src/model/enums/ai_agent_types.dart';
 import 'package:vitals_core/src/utils/const/prompts.dart';
 
 enum AIAgentsOptions {
@@ -68,11 +69,38 @@ enum AIAgentsOptions {
       systemPrompt: kSystemMulti,
       model: 'gpt-5',
     ),
+  ),
+  sao10K(
+    options: AIAgentOptions(
+      key: 'L3-8B-Stheno-v3.2',
+      name: 'L3-8B-Stheno-v3.2',
+      model: 'Sao10K/L3-8B-Stheno-v3.2:novita',
+    ),
+    type: AIAgentTypes.huggingface,
+  ),
+  miniMaxAI(
+    options: AIAgentOptions(
+      key: 'MiniMax-M2',
+      name: 'MiniMax-M2',
+      model: 'MiniMaxAI/MiniMax-M2:novita',
+    ),
+    type: AIAgentTypes.huggingface,
+  ),
+  qwen(
+    options: AIAgentOptions(
+      key: 'Qwen2.5-VL-7B-Instruct',
+      name: 'Qwen2.5-VL-7B-Instruct',
+      model: 'Qwen/Qwen2.5-VL-7B-Instruct:hyperbolic',
+    ),
+    type: AIAgentTypes.huggingface,
   );
 
   final AIAgentOptions options;
 
+  final AIAgentTypes type;
+
   const AIAgentsOptions({
     required this.options,
+    this.type = AIAgentTypes.deff,
   });
 }
