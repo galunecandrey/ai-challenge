@@ -34,4 +34,11 @@ abstract class CoreModules {
 
   @lazySingleton
   OpenAIClient openAIClient({@Named('AIKey') required String key}) => OpenAIClient(apiKey: key);
+
+  @lazySingleton
+  @Named('huggingfaceAIClient')
+  OpenAIClient huggingfaceAIClient({@Named('huggingfaceAIKey') required String key}) => OpenAIClient(
+        baseUrl: 'https://router.huggingface.co/v1',
+        apiKey: key,
+      );
 }

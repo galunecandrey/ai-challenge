@@ -5,24 +5,31 @@ import 'package:vitals_core/src/api/providers/ai_agent_provider.dart';
 import 'package:vitals_core/src/api/providers/date_time_provider.dart';
 import 'package:vitals_core/src/impl/ai/ai_agent_impl.dart' show AIAgentImpl;
 import 'package:vitals_core/src/model/ai_agent_options/ai_agent_options.dart';
+import 'package:vitals_core/src/model/enums/ai_agent_types.dart';
 import 'package:vitals_utils/vitals_utils.dart';
 
 @LazySingleton(as: AIAgentProvider)
 final class AIRepositoryImpl implements AIAgentProvider {
   AIRepositoryImpl(
     this._client,
+    @Named('huggingfaceAIClient') this._huggingfaceClient,
     this._operationService,
     this._dateTimeProvider,
   );
 
   final OpenAIClient _client;
+  final OpenAIClient _huggingfaceClient;
   final OperationService _operationService;
   final DateTimeProvider _dateTimeProvider;
 
   @override
-  AIAgent get(AIAgentOptions options) => AIAgentImpl(
+  AIAgent get(
+    AIAgentOptions options, {
+    AIAgentTypes type = AIAgentTypes.deff,
+  }) =>
+      AIAgentImpl(
         options,
-        _client,
+        type == AIAgentTypes.huggingface ? _huggingfaceClient : _client,
         _operationService,
         _dateTimeProvider,
       );

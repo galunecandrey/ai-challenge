@@ -46,17 +46,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i888.HomeViewModel>(() => _i888.HomeViewModel());
     gh.lazySingleton<_i878.GetIt>(() => dIModule.di);
     gh.lazySingleton<_i828.VitalsRouter>(() => visRouterModule.router);
-    gh.factoryParam<_i58.ChatRoomViewModel, _i479.AIAgentOptions?, double?>((
+    gh.lazySingleton<_i870.VitalsSystemTrayManager>(
+        () => _i870.VitalsSystemTrayManager(gh<_i479.PlatformProvider>()));
+    gh.factoryParam<_i58.ChatRoomViewModel, _i479.AIAgentOptions?,
+        _i479.AIAgentTypes?>((
       options,
-      temperature,
+      type,
     ) =>
         _i58.ChatRoomViewModel(
           gh<_i479.AIAgentProvider>(),
           options,
-          temperature,
+          type,
         ));
-    gh.lazySingleton<_i870.VitalsSystemTrayManager>(
-        () => _i870.VitalsSystemTrayManager(gh<_i479.PlatformProvider>()));
     gh.lazySingleton<_i391.LocalizationDataSource>(
         () => _i775.VisLocalizationDataSource());
     gh.lazySingleton<_i85.Initializer>(() => _i85.Initializer(

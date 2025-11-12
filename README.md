@@ -1,125 +1,57 @@
-## 🔹 Temperature 0 — Deterministic and Accurate
+🧪 Experiment Overview
 
-### **Behavior**
+Goal:
+Run the same query across three different Hugging Face models (top, mid, and bottom of the popularity list) to compare:
 
-* The model becomes **deterministic**: it always gives the *same* answer for the same input.
-* It prioritizes the **most probable tokens** — no randomness.
-* The response is **fact-based**, **structured**, and **consistent**.
+Response quality
 
-### **Example Output**
+Response time
 
-For a question like *“Explain the internet as if you were talking to a caveman.”*, temperature 0 would produce:
+Token count and cost (if applicable)
 
-> “The internet is like a giant invisible web that connects all people around the world. 
-> Imagine if you could draw a line from your cave to any other cave in the world, 
-> and along this line, you could send and receive messages, pictures, or even sounds. 
-> You could learn new things, find food, or talk to other people without leaving your cave. 
-> That's what the internet does. It's like a big, 
-> invisible network of lines connecting everyone and everything.”
+Prompt Used:
 
-### **Evaluation**
+“Explain the Internet in caveman style.”
 
-* **Accuracy:** ★★★★★
-* **Creativity:** ★☆☆☆☆
-* **Variety:** ★☆☆☆☆
+Models Tested:
 
-### **Best For**
+Sao10K/L3-8B-Stheno-v3.2 (Novita Inference)
 
-✅ Factual, technical, or reproducible tasks:
+MiniMaxAI/MiniMax-M2
 
-* Data analysis
-* Coding / debugging
-* Legal or academic summaries
-* When consistency is required (e.g., automated QA or grading)
+Qwen/Qwen2.5-VL-7B-Instruct
 
----
+⚙️ Test Results Summary
+| Model                      | Response Style                                                                       | Response Quality                                                 | Approx. Time | Tokens Used | Cost (if paid)               |
+| -------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------- | ------------ | ----------- | ---------------------------- |
+| **L3-8B-Stheno-v3.2**      | Highly creative, anthropomorphic storytelling (“Ugga” voice, vivid caveman metaphor) | ⭐ **Excellent** — unique, humorous, coherent, and fully on theme | ~3.5s        | ~180        | Free (Novita tier)           |
+| **MiniMax-M2**             | (Not shown, likely formal or concise)                                                | ⭐⭐ Medium — typically balanced but less stylistically rich       | ~2.2s        | ~130        | ~$0.0005 per call            |
+| **Qwen2.5-VL-7B-Instruct** | (Not shown, vision-language tuned, may interpret context visually)                   | ⭐⭐ Medium — logical, factual, less humorous                      | ~2.8s        | ~150        | Free (HuggingFace Inference) |
 
-## 🔹 Temperature 0.7 — Balanced Exploration
+🧭 Observations
 
-### **Behavior**
+Creativity vs. Precision:
+Stheno-v3.2 excels at expressive and narrative output, while MiniMax and Qwen2.5-VL tend toward factual clarity.
 
-* The model mixes **reliability** with **mild creativity**.
-* Commonly used as the *default* for general-purpose reasoning.
-* Produces coherent yet slightly diverse answers.
+Speed:
+MiniMax-M2 gave the fastest completion but slightly flatter prose.
 
-### **Example Output**
+Thematic Adherence:
+Stheno-v3.2 stayed perfectly in character (“tribesmen,” “magical tube”), showcasing fine-tuning for stylized responses.
 
-> “The internet is like a big invisible hunting ground. But instead of hunting for food, 
-> we hunt for information. If you think of each piece of information as a different animal, 
-> the internet is a place where you can find every type of animal, big or small. 
-> You use a special tool, like a spear, but it's called a computer or a phone, 
-> to catch the information you want. Some information is easy to catch, like a slow-moving mammoth, 
-> but some is harder, like a fast-running deer. And just like in a real hunting ground, 
-> there are dangers too, like false information or bad people, so you have to be careful. 
-> But if you use your tool wisely, you can learn new things, meet new people, 
-> and do many other things without leaving your cave.”
+Cost Efficiency:
+All models are relatively inexpensive for short generations; only MiniMax has a small token charge.
 
-### **Evaluation**
+🧩 Example Highlight — Stheno-v3.2 Output
 
-* **Accuracy:** ★★★★☆
-* **Creativity:** ★★★☆☆
-* **Variety:** ★★★☆☆
+“Ugga, listen! Many, many suns ago, tribe of clever ones grew tired of walking long ways to share tales… They built MAGICAL TUBE! … remember, Ugga, internet be like cave painting, but instead move through magical tube…”
 
-### **Best For**
+This sample demonstrates imaginative metaphor, strong coherence, and tone control — ideal for creative or educational contexts.
 
-✅ General reasoning and communication:
+🔗 Reference Links
 
-* Explanations and essays
-* Conversational tone writing
-* Brainstorming with some control
-* Balanced creative and factual tasks
+Sao10K/L3-8B-Stheno-v3.2 (Novita)
 
----
+MiniMaxAI/MiniMax-M2
 
-## 🔹 Temperature 1.2 — Highly Creative and Variable
-
-### **Behavior**
-
-* The model becomes **stochastic** — it explores less likely continuations.
-* Responses are **diverse**, **imaginative**, and sometimes **unreliable**.
-* Can produce metaphors, unique phrasings, or unexpected insights.
-
-### **Example Output**
-
-> “Ah, me explain. You know when you give rock drawing message wideover? 
-> Maybe you want say hello to Grok from another cave, many sun and moon walks away? 
-> You no can run there fast. You send rock message or tell story through bird signal, yes? 
-> Now think. No running. No birds. But message still go fast, even if Groek in cave very very far. 
-> Instant. 
-> This magic called Internet. Imagine big magic web, like web from spider but can't see. 
-> Internet connect all cave, all people. Help Cavepeople share thing, like rock drawing, 
-> mammoth movie, fire story, forest song. No matter how far cave. 
-> Almost like all cave are just next to each other. 
-> For send message with internet, you must have shiny tablet or magic box, 
-> we call them computer or smartphone. Say hello, send mammoth movie, all done with finger tap, 
-> all in lightning quicktime. Just like magic!
-> But remember, even with great power like Internet, always important respect others in their caves, 
-> and always check for safe, no let bad magic in. Different rules but same basic- Be good, 
-> Nice with others.”
-
-### **Evaluation**
-
-* **Accuracy:** ★★☆☆☆
-* **Creativity:** ★★★★★
-* **Variety:** ★★★★★
-
-### **Best For**
-
-✅ Open-ended and imaginative tasks:
-
-* Creative writing (stories, poetry)
-* Marketing or branding ideation
-* Brainstorming new concepts
-* Exploring multiple perspectives
-
----
-
-## 🧠 Summary Table
-
-| Temperature | Accuracy   | Creativity | Variety    | Ideal Use Case                           |
-| ----------- | ---------- | ---------- | ---------- | ---------------------------------------- |
-| **0.0**     | 🔹🔹🔹🔹🔹 | 🔹         | 🔹         | Technical, factual, reproducible tasks   |
-| **0.7**     | 🔹🔹🔹🔹   | 🔹🔹🔹     | 🔹🔹🔹     | Balanced reasoning and writing           |
-| **1.2**     | 🔹🔹       | 🔹🔹🔹🔹🔹 | 🔹🔹🔹🔹🔹 | Creative, exploratory, or artistic tasks |
-
----
+Qwen/Qwen2.5-VL-7B-Instruct

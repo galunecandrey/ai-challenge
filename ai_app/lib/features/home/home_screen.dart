@@ -5,7 +5,11 @@ import 'package:vitals_core/vitals_core.dart';
 import 'package:vitals_sdk_example/features/chat/chat_room_screen.dart';
 import 'package:vitals_sdk_example/features/home/vm/home_viewmodel.dart' show HomeViewModel;
 
-const _kTemperatures = <double>[0.0, 0.7, 1.2];
+const _kHuggingFaceModels = <AIAgentsOptions>[
+  AIAgentsOptions.sao10K,
+  AIAgentsOptions.miniMaxAI,
+  AIAgentsOptions.qwen,
+];
 
 @RoutePage()
 class HomeScreen extends Binder<HomeViewModel> {
@@ -25,7 +29,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-        length: _kTemperatures.length,
+        length: _kHuggingFaceModels.length,
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
@@ -37,19 +41,23 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
             ),
             bottom: TabBar(
               tabs: [
-                for (final temperature in _kTemperatures)
+                for (final model in _kHuggingFaceModels)
                   Tab(
-                    text: 'Temperature: $temperature',
+                    text: model.name,
                   ),
               ],
             ),
           ),
           body: TabBarView(
             children: [
-              for (final temperature in _kTemperatures)
+              for (final model in _kHuggingFaceModels)
                 ChatRoomScreen(
-                  options: AIAgentOptions(key: '$temperature', name: 'Assistant', model: 'gpt-4'),
-                  temperature: temperature,
+                  options: AIAgentOptions(
+                    key: model.options.key,
+                    name: model.options.name,
+                    model: model.options.model,
+                  ),
+                  type: model.type,
                 ),
             ],
           ),

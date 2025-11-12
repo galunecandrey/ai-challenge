@@ -62,16 +62,25 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i865.PlatformInfo>(() => defines.platformInfo);
     gh.lazySingleton<_i974.LogFilter>(() => _i514.VitalsLogFilter());
     gh.lazySingleton<String>(
-      () => defines.firebaseApiKeyAndroid,
+      () => defines.openAIKey,
       instanceName: 'AIKey',
     );
     gh.lazySingleton<_i182.LifecycleEventsProvider>(
       () => _i163.DefaultLifecycleEventsProviderImpl(),
       dispose: (i) => i.dispose(),
     );
+    gh.lazySingleton<String>(
+      () => defines.huggingfaceAIKey,
+      instanceName: 'huggingfaceAIKey',
+    );
     gh.lazySingleton<_i264.Size>(
       () => defines.minDesktopWindowSize,
       instanceName: 'minDesktopWindowSize',
+    );
+    gh.lazySingleton<_i948.OpenAIClient>(
+      () => coreModules.huggingfaceAIClient(
+          key: gh<String>(instanceName: 'huggingfaceAIKey')),
+      instanceName: 'huggingfaceAIClient',
     );
     gh.lazySingleton<_i948.OpenAIClient>(
         () => coreModules.openAIClient(key: gh<String>(instanceName: 'AIKey')));
@@ -112,6 +121,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i970.AIAgentProvider>(() => _i90.AIRepositoryImpl(
           gh<_i948.OpenAIClient>(),
+          gh<_i948.OpenAIClient>(instanceName: 'huggingfaceAIClient'),
           gh<_i865.OperationService>(),
           gh<_i804.DateTimeProvider>(),
         ));
