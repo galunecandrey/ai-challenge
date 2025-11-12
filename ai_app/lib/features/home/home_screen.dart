@@ -5,12 +5,6 @@ import 'package:vitals_core/vitals_core.dart';
 import 'package:vitals_sdk_example/features/chat/chat_room_screen.dart';
 import 'package:vitals_sdk_example/features/home/vm/home_viewmodel.dart' show HomeViewModel;
 
-const _kHuggingFaceModels = <AIAgentsOptions>[
-  AIAgentsOptions.sao10K,
-  AIAgentsOptions.miniMaxAI,
-  AIAgentsOptions.qwen,
-];
-
 @RoutePage()
 class HomeScreen extends Binder<HomeViewModel> {
   const HomeScreen({
@@ -29,36 +23,36 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-        length: _kHuggingFaceModels.length,
+        length: 1,
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
-              'Day 4. Different Reasoning Methods',
+              'Day 7',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
-                for (final model in _kHuggingFaceModels)
-                  Tab(
-                    text: model.name,
-                  ),
+                //for (final model in _kHuggingFaceModels)
+                Tab(
+                  text: 'Working with Tokens',
+                ),
               ],
             ),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
-              for (final model in _kHuggingFaceModels)
-                ChatRoomScreen(
-                  options: AIAgentOptions(
-                    key: model.options.key,
-                    name: model.options.name,
-                    model: model.options.model,
-                  ),
-                  type: model.type,
+              //for (final model in _kHuggingFaceModels)
+              ChatRoomScreen(
+                options: AIAgentOptions(
+                  key: 'key',
+                  name: 'Assistant',
+                  model: 'gpt-4',
                 ),
+                type: AIAgentTypes.deff,
+              ),
             ],
           ),
         ),

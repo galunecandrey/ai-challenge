@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:openai_dart/openai_dart.dart'
     show ChatCompletionDeveloperMessageContent, ChatCompletionMessage, ChatCompletionUserMessageContent;
 import 'package:vitals_core/src/model/message/message_data.dart';
+import 'package:vitals_core/src/model/message/usage_data.dart';
 
 part 'message.freezed.dart';
 
@@ -12,6 +13,7 @@ sealed class Message with _$Message {
     required int id,
     required MessageRoles role,
     required String text,
+    UsageData? usage,
     MessageData? data,
   }) = _Message;
 }

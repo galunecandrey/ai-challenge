@@ -19,6 +19,7 @@ mixin _$Message {
   int get id => throw _privateConstructorUsedError;
   MessageRoles get role => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
+  UsageData? get usage => throw _privateConstructorUsedError;
   MessageData? get data => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,8 +31,14 @@ abstract class $MessageCopyWith<$Res> {
   factory $MessageCopyWith(Message value, $Res Function(Message) then) =
       _$MessageCopyWithImpl<$Res, Message>;
   @useResult
-  $Res call({int id, MessageRoles role, String text, MessageData? data});
+  $Res call(
+      {int id,
+      MessageRoles role,
+      String text,
+      UsageData? usage,
+      MessageData? data});
 
+  $UsageDataCopyWith<$Res>? get usage;
   $MessageDataCopyWith<$Res>? get data;
 }
 
@@ -51,6 +58,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? id = null,
     Object? role = null,
     Object? text = null,
+    Object? usage = freezed,
     Object? data = freezed,
   }) {
     return _then(_value.copyWith(
@@ -66,11 +74,27 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      usage: freezed == usage
+          ? _value.usage
+          : usage // ignore: cast_nullable_to_non_nullable
+              as UsageData?,
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as MessageData?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UsageDataCopyWith<$Res>? get usage {
+    if (_value.usage == null) {
+      return null;
+    }
+
+    return $UsageDataCopyWith<$Res>(_value.usage!, (value) {
+      return _then(_value.copyWith(usage: value) as $Val);
+    });
   }
 
   @override
@@ -93,8 +117,15 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
       __$$MessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, MessageRoles role, String text, MessageData? data});
+  $Res call(
+      {int id,
+      MessageRoles role,
+      String text,
+      UsageData? usage,
+      MessageData? data});
 
+  @override
+  $UsageDataCopyWith<$Res>? get usage;
   @override
   $MessageDataCopyWith<$Res>? get data;
 }
@@ -113,6 +144,7 @@ class __$$MessageImplCopyWithImpl<$Res>
     Object? id = null,
     Object? role = null,
     Object? text = null,
+    Object? usage = freezed,
     Object? data = freezed,
   }) {
     return _then(_$MessageImpl(
@@ -128,6 +160,10 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      usage: freezed == usage
+          ? _value.usage
+          : usage // ignore: cast_nullable_to_non_nullable
+              as UsageData?,
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -140,7 +176,11 @@ class __$$MessageImplCopyWithImpl<$Res>
 
 class _$MessageImpl implements _Message {
   const _$MessageImpl(
-      {required this.id, required this.role, required this.text, this.data});
+      {required this.id,
+      required this.role,
+      required this.text,
+      this.usage,
+      this.data});
 
   @override
   final int id;
@@ -149,11 +189,13 @@ class _$MessageImpl implements _Message {
   @override
   final String text;
   @override
+  final UsageData? usage;
+  @override
   final MessageData? data;
 
   @override
   String toString() {
-    return 'Message(id: $id, role: $role, text: $text, data: $data)';
+    return 'Message(id: $id, role: $role, text: $text, usage: $usage, data: $data)';
   }
 
   @override
@@ -164,11 +206,12 @@ class _$MessageImpl implements _Message {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.role, role) || other.role == role) &&
             (identical(other.text, text) || other.text == text) &&
+            (identical(other.usage, usage) || other.usage == usage) &&
             (identical(other.data, data) || other.data == data));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, role, text, data);
+  int get hashCode => Object.hash(runtimeType, id, role, text, usage, data);
 
   @JsonKey(ignore: true)
   @override
@@ -182,6 +225,7 @@ abstract class _Message implements Message {
       {required final int id,
       required final MessageRoles role,
       required final String text,
+      final UsageData? usage,
       final MessageData? data}) = _$MessageImpl;
 
   @override
@@ -190,6 +234,8 @@ abstract class _Message implements Message {
   MessageRoles get role;
   @override
   String get text;
+  @override
+  UsageData? get usage;
   @override
   MessageData? get data;
   @override

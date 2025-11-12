@@ -43,7 +43,6 @@ class ChatRoomViewModel extends ViewModel {
     _agent
         .sendRequest(
       text,
-      isKeepContext: false,
     )
         .then((v) {
       _isWaiting.add(false);
