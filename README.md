@@ -3,15 +3,15 @@
 Goal:
 Run the same query across three different Hugging Face models (top, mid, and bottom of the popularity list) to compare:
 
-Response quality
+- Response quality
 
-Response time
+- Response time
 
-Token count and cost (if applicable)
+- Token count and cost (if applicable)
 
 Prompt Used:
 
-“Explain the Internet in caveman style.”
+“Explain the internet as if you were talking to a caveman.”
 
 Models Tested:
 

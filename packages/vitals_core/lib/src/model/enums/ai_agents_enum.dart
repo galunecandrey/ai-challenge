@@ -74,7 +74,7 @@ enum AIAgentsOptions {
     options: AIAgentOptions(
       key: 'L3-8B-Stheno-v3.2',
       name: 'L3-8B-Stheno-v3.2',
-      model: 'L3-8B-Stheno-v3.2',
+      model: 'Sao10K/L3-8B-Stheno-v3.2:novita',
     ),
     type: AIAgentTypes.huggingface,
   ),
@@ -82,7 +82,7 @@ enum AIAgentsOptions {
     options: AIAgentOptions(
       key: 'MiniMax-M2',
       name: 'MiniMax-M2',
-      model: 'MiniMax-M2',
+      model: 'MiniMaxAI/MiniMax-M2:novita',
     ),
     type: AIAgentTypes.huggingface,
   ),
@@ -90,7 +90,7 @@ enum AIAgentsOptions {
     options: AIAgentOptions(
       key: 'Qwen2.5-VL-7B-Instruct',
       name: 'Qwen2.5-VL-7B-Instruct',
-      model: 'Qwen2.5-VL-7B-Instruct',
+      model: 'Qwen/Qwen2.5-VL-7B-Instruct:hyperbolic',
     ),
     type: AIAgentTypes.huggingface,
   );
