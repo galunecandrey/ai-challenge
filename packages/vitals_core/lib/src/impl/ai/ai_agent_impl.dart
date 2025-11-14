@@ -1,5 +1,3 @@
-import 'dart:convert' show jsonDecode;
-
 import 'package:openai_dart/openai_dart.dart'
     show
         ChatCompletionMessage,
@@ -11,7 +9,7 @@ import 'package:vitals_core/src/ai/ai_agent.dart' show AIAgent;
 import 'package:vitals_core/src/api/providers/date_time_provider.dart' show DateTimeProvider;
 import 'package:vitals_core/src/model/ai_agent_options/ai_agent_options.dart' show AIAgentOptions;
 import 'package:vitals_core/src/model/message/message.dart' show Message, MessageExt, MessageRoles;
-import 'package:vitals_core/src/model/message/message_data.dart' show MessageData;
+import 'package:vitals_core/src/model/message/usage_data.dart';
 import 'package:vitals_utils/vitals_utils.dart';
 
 final class AIAgentImpl extends Disposable implements AIAgent {
@@ -57,6 +55,7 @@ final class AIAgentImpl extends Disposable implements AIAgent {
         ..._context.value,
       ]),
     );
+    final stopwatch = Stopwatch()..start();
     return _operationService
         .safeAsyncOp(
       () => _client.createChatCompletion(
@@ -77,14 +76,22 @@ final class AIAgentImpl extends Disposable implements AIAgent {
       ),
     )
         .then((result) {
+      stopwatch.stop();
       info(result.toString());
-
       return result.map((r) {
         final result = r.choices.first.let(
           (it) => Message(
             id: _dateTimeProvider.current.millisecondsSinceEpoch,
             role: MessageRoles.assistant,
             text: it.message.content.orEmpty,
+            usage: r.usage?.let(
+              (it) => UsageData(
+                requestTokens: it.promptTokens,
+                responseTokens: it.completionTokens,
+                totalTokens: it.totalTokens,
+                time: stopwatch.elapsed,
+              ),
+            ),
             // data: _operationService
             //     .safeSyncOp(
             //       () => MessageData.fromJson(

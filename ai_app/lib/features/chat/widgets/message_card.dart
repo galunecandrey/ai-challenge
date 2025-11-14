@@ -37,7 +37,13 @@ class MessageCard extends StatelessWidget {
                       MessageWaiting() => const WaitingCallLabel(),
                       MessageItem(model: final data) => Text(
                           message.isUser || data.data == null
-                              ? data.text
+                              ? '${data.text}${data.usage == null ? '' : '\n============================\n'
+                                  'USAGE\n'
+                                  '============================\n'
+                                  'RequestTokens: ${data.usage?.requestTokens ?? '???'}\n'
+                                  'ResponseTokens: ${data.usage?.responseTokens ?? '???'}\n'
+                                  'TotalTokens: ${data.usage?.totalTokens ?? '???'}\n'
+                                  'Time: ${_formatDuration(data.usage?.time)}'}'
                               : 'Tag: ${data.data?.tag}\n'
                                   'Title: ${data.data?.title}\n'
                                   'Answer: ${data.data?.answer}\n'
@@ -55,4 +61,16 @@ class MessageCard extends StatelessWidget {
           ),
         ),
       );
+}
+
+String _formatDuration(Duration? d) {
+  if (d == null) {
+    return '???';
+  }
+  String twoDigits(int n) => n.toString().padLeft(2, '0');
+  final hours = twoDigits(d.inHours);
+  final minutes = twoDigits(d.inMinutes.remainder(60));
+  final seconds = twoDigits(d.inSeconds.remainder(60));
+
+  return '$hours:$minutes:$seconds';
 }
