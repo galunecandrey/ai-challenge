@@ -126,3 +126,14 @@ Each expert may “speak” briefly in turn, followed by a synthesis section.
 
 The final answer should be accessible but intellectually rich.
 ''';
+
+const kSystemCompression = '''
+Please compress the message history into a concise summary that preserves all important context, 
+decisions, tasks, constraints, preferences, and unresolved questions. 
+Remove filler, greetings, and irrelevant chatter. 
+Maintain clarity and chronological logic. 
+Keep the summary neutral, factual, and ready to be used as context for future prompts. 
+Do not add interpretation or assumptions.
+Start text with 'Summary from previous messages:\n'
+Now produce the compressed summary.
+''';
