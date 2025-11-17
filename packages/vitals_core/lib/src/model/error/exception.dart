@@ -34,3 +34,7 @@ class NotAuthenticatedUserException implements Exception {
 class ServiceDisposedException implements Exception {
   const ServiceDisposedException();
 }
+
+class StorageClosedException implements Exception {
+  const StorageClosedException();
+}

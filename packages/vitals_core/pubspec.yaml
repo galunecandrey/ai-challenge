@@ -23,6 +23,11 @@ dependencies:
   dio: ^5.4.3+1
   retrofit: ^4.1.0
   openai_dart: ^0.5.4+1
+  realm: ^20.0.0
+  hive: ^2.2.3
+  ksuid: ^1.0.0
+  uuid: ^4.5.0
+  flutter_udid: ^3.0.0
   system_tools:
     path: ../system_tools
   vitals_utils:
@@ -36,5 +41,6 @@ dev_dependencies:
   retrofit_generator: ^8.1.0
   json_serializable: ^6.8.0
   freezed: ^2.5.2
+  hive_generator: ^2.0.1
   vitals_lint:
     path: ../vitals_lint

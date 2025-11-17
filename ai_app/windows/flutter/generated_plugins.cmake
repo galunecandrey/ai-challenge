@@ -4,6 +4,8 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_window
+  flutter_udid
+  realm
   screen_retriever
   system_tools
   system_tray

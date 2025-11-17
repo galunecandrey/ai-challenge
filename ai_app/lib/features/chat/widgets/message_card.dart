@@ -36,18 +36,13 @@ class MessageCard extends StatelessWidget {
                     switch (message) {
                       MessageWaiting() => const WaitingCallLabel(),
                       MessageItem(model: final data) => Text(
-                          message.isUser || data.data == null
-                              ? '${data.text}${data.usage == null ? '' : '\n============================\n'
-                                  'USAGE\n'
-                                  '============================\n'
-                                  'RequestTokens: ${data.usage?.requestTokens ?? '???'}\n'
-                                  'ResponseTokens: ${data.usage?.responseTokens ?? '???'}\n'
-                                  'TotalTokens: ${data.usage?.totalTokens ?? '???'}\n'
-                                  'Time: ${_formatDuration(data.usage?.time)}'}'
-                              : 'Tag: ${data.data?.tag}\n'
-                                  'Title: ${data.data?.title}\n'
-                                  'Answer: ${data.data?.answer}\n'
-                                  'Time: ${data.data?.time}',
+                          '${data.text}${data.usage == null ? '' : '\n============================\n'
+                              'USAGE\n'
+                              '============================\n'
+                              'RequestTokens: ${data.usage?.requestTokens ?? '???'}\n'
+                              'ResponseTokens: ${data.usage?.responseTokens ?? '???'}\n'
+                              'TotalTokens: ${data.usage?.totalTokens ?? '???'}\n'
+                              'Time: ${_formatDuration(data.usage?.time)}'}',
                           style: TextStyle(
                             fontSize: 20,
                             color: message.isUser || themeMode == VisThemeMode.dark ? null : AppColors.black,

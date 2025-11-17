@@ -46,7 +46,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
             children: [
               //for (final model in _kHuggingFaceModels)
               ChatRoomScreen(
-                options: AIAgentOptions(
+                options: AISession(
                   key: 'key',
                   name: 'Assistant',
                   model: 'gpt-4',
