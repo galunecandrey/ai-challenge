@@ -39,4 +39,11 @@ abstract class Defines {
         'HUGGINGFACE_AI_KEY',
         defaultValue: 'none',
       );
+
+  @lazySingleton
+  @Named('secureKey')
+  String get secureKey => const String.fromEnvironment(
+        'SECURE_KEY',
+        defaultValue: 'r61Y+CdHHkGUTmkTjRdUqW4J3PWIUdtuHq/h5ZD1FD0=',
+      );
 }

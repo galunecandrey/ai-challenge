@@ -16,11 +16,14 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Message {
-  int get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   MessageRoles get role => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
+  int get unixTime => throw _privateConstructorUsedError;
+  String get sessionKey => throw _privateConstructorUsedError;
+  bool get isActive => throw _privateConstructorUsedError;
+  bool get isCompressed => throw _privateConstructorUsedError;
   UsageData? get usage => throw _privateConstructorUsedError;
-  MessageData? get data => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MessageCopyWith<Message> get copyWith => throw _privateConstructorUsedError;
@@ -32,14 +35,16 @@ abstract class $MessageCopyWith<$Res> {
       _$MessageCopyWithImpl<$Res, Message>;
   @useResult
   $Res call(
-      {int id,
+      {String id,
       MessageRoles role,
       String text,
-      UsageData? usage,
-      MessageData? data});
+      int unixTime,
+      String sessionKey,
+      bool isActive,
+      bool isCompressed,
+      UsageData? usage});
 
   $UsageDataCopyWith<$Res>? get usage;
-  $MessageDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -58,14 +63,17 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? id = null,
     Object? role = null,
     Object? text = null,
+    Object? unixTime = null,
+    Object? sessionKey = null,
+    Object? isActive = null,
+    Object? isCompressed = null,
     Object? usage = freezed,
-    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
@@ -74,14 +82,26 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      unixTime: null == unixTime
+          ? _value.unixTime
+          : unixTime // ignore: cast_nullable_to_non_nullable
+              as int,
+      sessionKey: null == sessionKey
+          ? _value.sessionKey
+          : sessionKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isCompressed: null == isCompressed
+          ? _value.isCompressed
+          : isCompressed // ignore: cast_nullable_to_non_nullable
+              as bool,
       usage: freezed == usage
           ? _value.usage
           : usage // ignore: cast_nullable_to_non_nullable
               as UsageData?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as MessageData?,
     ) as $Val);
   }
 
@@ -96,18 +116,6 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
       return _then(_value.copyWith(usage: value) as $Val);
     });
   }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $MessageDataCopyWith<$Res>? get data {
-    if (_value.data == null) {
-      return null;
-    }
-
-    return $MessageDataCopyWith<$Res>(_value.data!, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -118,16 +126,17 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id,
+      {String id,
       MessageRoles role,
       String text,
-      UsageData? usage,
-      MessageData? data});
+      int unixTime,
+      String sessionKey,
+      bool isActive,
+      bool isCompressed,
+      UsageData? usage});
 
   @override
   $UsageDataCopyWith<$Res>? get usage;
-  @override
-  $MessageDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -144,14 +153,17 @@ class __$$MessageImplCopyWithImpl<$Res>
     Object? id = null,
     Object? role = null,
     Object? text = null,
+    Object? unixTime = null,
+    Object? sessionKey = null,
+    Object? isActive = null,
+    Object? isCompressed = null,
     Object? usage = freezed,
-    Object? data = freezed,
   }) {
     return _then(_$MessageImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
@@ -160,14 +172,26 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      unixTime: null == unixTime
+          ? _value.unixTime
+          : unixTime // ignore: cast_nullable_to_non_nullable
+              as int,
+      sessionKey: null == sessionKey
+          ? _value.sessionKey
+          : sessionKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isCompressed: null == isCompressed
+          ? _value.isCompressed
+          : isCompressed // ignore: cast_nullable_to_non_nullable
+              as bool,
       usage: freezed == usage
           ? _value.usage
           : usage // ignore: cast_nullable_to_non_nullable
               as UsageData?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as MessageData?,
     ));
   }
 }
@@ -179,23 +203,34 @@ class _$MessageImpl implements _Message {
       {required this.id,
       required this.role,
       required this.text,
-      this.usage,
-      this.data});
+      required this.unixTime,
+      required this.sessionKey,
+      this.isActive = true,
+      this.isCompressed = false,
+      this.usage});
 
   @override
-  final int id;
+  final String id;
   @override
   final MessageRoles role;
   @override
   final String text;
   @override
-  final UsageData? usage;
+  final int unixTime;
   @override
-  final MessageData? data;
+  final String sessionKey;
+  @override
+  @JsonKey()
+  final bool isActive;
+  @override
+  @JsonKey()
+  final bool isCompressed;
+  @override
+  final UsageData? usage;
 
   @override
   String toString() {
-    return 'Message(id: $id, role: $role, text: $text, usage: $usage, data: $data)';
+    return 'Message(id: $id, role: $role, text: $text, unixTime: $unixTime, sessionKey: $sessionKey, isActive: $isActive, isCompressed: $isCompressed, usage: $usage)';
   }
 
   @override
@@ -206,12 +241,20 @@ class _$MessageImpl implements _Message {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.role, role) || other.role == role) &&
             (identical(other.text, text) || other.text == text) &&
-            (identical(other.usage, usage) || other.usage == usage) &&
-            (identical(other.data, data) || other.data == data));
+            (identical(other.unixTime, unixTime) ||
+                other.unixTime == unixTime) &&
+            (identical(other.sessionKey, sessionKey) ||
+                other.sessionKey == sessionKey) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive) &&
+            (identical(other.isCompressed, isCompressed) ||
+                other.isCompressed == isCompressed) &&
+            (identical(other.usage, usage) || other.usage == usage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, role, text, usage, data);
+  int get hashCode => Object.hash(runtimeType, id, role, text, unixTime,
+      sessionKey, isActive, isCompressed, usage);
 
   @JsonKey(ignore: true)
   @override
@@ -222,22 +265,31 @@ class _$MessageImpl implements _Message {
 
 abstract class _Message implements Message {
   const factory _Message(
-      {required final int id,
+      {required final String id,
       required final MessageRoles role,
       required final String text,
-      final UsageData? usage,
-      final MessageData? data}) = _$MessageImpl;
+      required final int unixTime,
+      required final String sessionKey,
+      final bool isActive,
+      final bool isCompressed,
+      final UsageData? usage}) = _$MessageImpl;
 
   @override
-  int get id;
+  String get id;
   @override
   MessageRoles get role;
   @override
   String get text;
   @override
-  UsageData? get usage;
+  int get unixTime;
   @override
-  MessageData? get data;
+  String get sessionKey;
+  @override
+  bool get isActive;
+  @override
+  bool get isCompressed;
+  @override
+  UsageData? get usage;
   @override
   @JsonKey(ignore: true)
   _$$MessageImplCopyWith<_$MessageImpl> get copyWith =>

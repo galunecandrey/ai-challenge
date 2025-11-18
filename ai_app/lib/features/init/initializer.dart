@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 import 'package:vitals_arch/vitals_arch.dart';
+import 'package:vitals_core/vitals_core.dart' show InitFramework;
 import 'package:vitals_utils/vitals_utils.dart';
 
 @lazySingleton
@@ -24,7 +25,7 @@ class Initializer {
 
   Future<void> _startOperation(GetIt di, OperationService os) async {
     final result = await os.safeAsyncOp(
-      () => di.allReady(),
+      () => di.allReady().then((value) => di.getAsync<InitFramework>()),
       tag: _getTag('startOperation'),
     );
     _setResult(

@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:vitals_core/src/model/entities/messages/message_entity.dart';
 
 part 'usage_data.freezed.dart';
 
@@ -16,4 +17,13 @@ sealed class UsageData with _$UsageData {
   }) = _UsageData;
 
   factory UsageData.fromJson(Map<String, dynamic> json) => _$UsageDataFromJson(json);
+}
+
+extension UsageDataExt on UsageData {
+  UsageDataEntity get toEntity => UsageDataEntity(
+        requestTokens: requestTokens,
+        responseTokens: responseTokens,
+        totalTokens: totalTokens,
+        time: time?.inMilliseconds,
+      );
 }

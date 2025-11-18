@@ -1,4 +1,4 @@
-import 'package:vitals_core/src/model/ai_agent_options/ai_agent_options.dart';
+import 'package:vitals_core/src/model/ai_session/ai_session.dart' show AISession;
 import 'package:vitals_core/src/model/message/message.dart';
 import 'package:vitals_utils/vitals_utils.dart';
 
@@ -13,9 +13,9 @@ abstract interface class AIAgent implements Disposable {
     bool isKeepContext = true,
   });
 
-  AIAgentOptions get options;
+  AISession get options;
 
-  Stream<AIAgentOptions> getOptionsStream({bool sendFirst = false});
+  Stream<AISession> getOptionsStream({bool sendFirst = false});
 
   List<Message> get context;
 

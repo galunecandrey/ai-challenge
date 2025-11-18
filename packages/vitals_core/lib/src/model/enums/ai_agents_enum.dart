@@ -1,17 +1,17 @@
-import 'package:vitals_core/src/model/ai_agent_options/ai_agent_options.dart';
+import 'package:vitals_core/src/model/ai_session/ai_session.dart' show AISession;
 import 'package:vitals_core/src/model/enums/ai_agent_types.dart';
 import 'package:vitals_core/src/utils/const/prompts.dart';
 
 enum AIAgentsOptions {
   simple(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'simple',
       name: 'gpt-5',
       model: 'gpt-5',
     ),
   ),
   simpleWithByStep(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'simpleWithByStep',
       name: 'By Step',
       systemPrompt: kSystemStepByStep,
@@ -19,27 +19,27 @@ enum AIAgentsOptions {
     ),
   ),
   simpleGPT5mini(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'simpleGPT5mini',
       name: 'gpt-5-mini',
       model: 'gpt-5-mini',
     ),
   ),
   simpleGPT5nano(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'simpleGPT5nano',
       name: 'gpt-5-nano',
       model: 'gpt-5-nano',
     ),
   ),
   simpleGPT4_1(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'simpleGPT4_1',
       name: 'gpt-4.1',
     ),
   ),
   physicist(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'physicist',
       name: 'Physicist',
       systemPrompt: kSystemPhysicist,
@@ -47,7 +47,7 @@ enum AIAgentsOptions {
     ),
   ),
   mathematician(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'mathematician',
       name: 'Mathematician',
       systemPrompt: kSystemMathematician,
@@ -55,7 +55,7 @@ enum AIAgentsOptions {
     ),
   ),
   philosopher(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'philosopher',
       name: 'Philosopher',
       systemPrompt: kSystemPhilosopher,
@@ -63,7 +63,7 @@ enum AIAgentsOptions {
     ),
   ),
   multirole(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'multirole',
       name: 'Multi',
       systemPrompt: kSystemMulti,
@@ -71,7 +71,7 @@ enum AIAgentsOptions {
     ),
   ),
   sao10K(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'L3-8B-Stheno-v3.2',
       name: 'L3-8B-Stheno-v3.2',
       model: 'Sao10K/L3-8B-Stheno-v3.2:novita',
@@ -79,7 +79,7 @@ enum AIAgentsOptions {
     type: AIAgentTypes.huggingface,
   ),
   miniMaxAI(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'MiniMax-M2',
       name: 'MiniMax-M2',
       model: 'MiniMaxAI/MiniMax-M2:novita',
@@ -87,7 +87,7 @@ enum AIAgentsOptions {
     type: AIAgentTypes.huggingface,
   ),
   qwen(
-    options: AIAgentOptions(
+    options: AISession(
       key: 'Qwen2.5-VL-7B-Instruct',
       name: 'Qwen2.5-VL-7B-Instruct',
       model: 'Qwen/Qwen2.5-VL-7B-Instruct:hyperbolic',
@@ -95,7 +95,7 @@ enum AIAgentsOptions {
     type: AIAgentTypes.huggingface,
   );
 
-  final AIAgentOptions options;
+  final AISession options;
 
   final AIAgentTypes type;
 

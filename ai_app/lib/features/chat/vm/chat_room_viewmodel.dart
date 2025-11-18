@@ -1,7 +1,7 @@
 // ignore_for_file: close_sinks
 import 'package:injectable/injectable.dart';
 import 'package:vitals_arch/vitals_arch.dart' show ViewModel;
-import 'package:vitals_core/vitals_core.dart' show AIAgent, AIAgentOptions, AIAgentProvider, AIAgentTypes;
+import 'package:vitals_core/vitals_core.dart' show AIAgent, AIAgentProvider, AIAgentTypes, AISession;
 import 'package:vitals_sdk_example/features/chat/model/message_item.dart' show MessageListItemModel;
 import 'package:vitals_utils/vitals_utils.dart';
 
@@ -32,7 +32,7 @@ class ChatRoomViewModel extends ViewModel {
 
   ChatRoomViewModel(
     AIAgentProvider provider,
-    @factoryParam AIAgentOptions? options,
+    @factoryParam AISession? options,
     @factoryParam AIAgentTypes? type,
   ) {
     _agent = provider.get(options!, type: type!);

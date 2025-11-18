@@ -48,7 +48,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i828.VitalsRouter>(() => visRouterModule.router);
     gh.lazySingleton<_i870.VitalsSystemTrayManager>(
         () => _i870.VitalsSystemTrayManager(gh<_i479.PlatformProvider>()));
-    gh.factoryParam<_i58.ChatRoomViewModel, _i479.AIAgentOptions?,
+    gh.lazySingleton<_i391.LocalizationDataSource>(
+        () => _i775.VisLocalizationDataSource());
+    gh.lazySingleton<_i85.Initializer>(() => _i85.Initializer(
+          gh<_i878.GetIt>(),
+          gh<_i865.OperationService>(),
+        ));
+    gh.lazySingleton<_i661.TranslationProvider>(
+        () => _i661.TranslationProvider(gh<_i126.VitalsRouter>()));
+    gh.factoryParam<_i58.ChatRoomViewModel, _i479.AISession?,
         _i479.AIAgentTypes?>((
       options,
       type,
@@ -58,14 +66,6 @@ extension GetItInjectableX on _i174.GetIt {
           options,
           type,
         ));
-    gh.lazySingleton<_i391.LocalizationDataSource>(
-        () => _i775.VisLocalizationDataSource());
-    gh.lazySingleton<_i85.Initializer>(() => _i85.Initializer(
-          gh<_i878.GetIt>(),
-          gh<_i865.OperationService>(),
-        ));
-    gh.lazySingleton<_i661.TranslationProvider>(
-        () => _i661.TranslationProvider(gh<_i126.VitalsRouter>()));
     return this;
   }
 }
