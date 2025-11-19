@@ -5,6 +5,7 @@ import 'package:vitals_core/src/api/providers/ai_agent_provider.dart';
 import 'package:vitals_core/src/api/providers/date_time_provider.dart';
 import 'package:vitals_core/src/api/storage/database/database.dart';
 import 'package:vitals_core/src/impl/ai/ai_agent_impl.dart' show AIAgentImpl;
+import 'package:vitals_core/src/impl/ai/ai_mcp_client_impl.dart';
 import 'package:vitals_core/src/model/ai_session/ai_session.dart' show AISession;
 import 'package:vitals_core/src/model/enums/ai_agent_types.dart';
 import 'package:vitals_utils/vitals_utils.dart';
@@ -17,6 +18,7 @@ final class AIRepositoryImpl implements AIAgentProvider {
     this._operationService,
     this._dateTimeProvider,
     this._database,
+    @Named('GitHubAIKey') this._mcpToken,
   );
 
   final OpenAIClient _client;
@@ -24,6 +26,7 @@ final class AIRepositoryImpl implements AIAgentProvider {
   final OperationService _operationService;
   final DateTimeProvider _dateTimeProvider;
   final Database _database;
+  final String _mcpToken;
 
   @override
   AIAgent get(
@@ -36,5 +39,9 @@ final class AIRepositoryImpl implements AIAgentProvider {
         _operationService,
         _dateTimeProvider,
         _database,
+        AiMcpClientImpl(
+          _operationService,
+          _mcpToken,
+        ),
       )..init();
 }

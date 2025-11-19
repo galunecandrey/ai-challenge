@@ -29,6 +29,7 @@ dependencies:
   uuid: ^4.5.0
   flutter_udid: ^3.0.0
   mcp_client: ^1.0.2
+  mcp_server: ^1.0.3
   system_tools:
     path: ../system_tools
   vitals_utils:

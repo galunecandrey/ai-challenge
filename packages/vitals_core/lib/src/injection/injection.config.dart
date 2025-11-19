@@ -86,6 +86,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i865.PlatformInfo>(() => defines.platformInfo);
     gh.lazySingleton<_i974.LogFilter>(() => _i514.VitalsLogFilter());
     gh.lazySingleton<String>(
+      () => defines.gitHubAIKey,
+      instanceName: 'GitHubAIKey',
+    );
+    gh.lazySingleton<String>(
       () => defines.openAIKey,
       instanceName: 'AIKey',
     );
@@ -204,6 +208,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i865.OperationService>(),
           gh<_i804.DateTimeProvider>(),
           gh<_i109.Database>(),
+          gh<String>(instanceName: 'GitHubAIKey'),
         ));
     return this;
   }

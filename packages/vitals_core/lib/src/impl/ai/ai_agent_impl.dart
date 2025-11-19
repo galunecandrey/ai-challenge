@@ -1,13 +1,21 @@
 //ignore_for_file: close_sinks
+import 'dart:convert';
+
 import 'package:ksuid/ksuid.dart';
 import 'package:openai_dart/openai_dart.dart'
     show
+        ChatCompletionFinishReason,
         ChatCompletionMessage,
+        ChatCompletionMessageToolCall,
         ChatCompletionModel,
+        ChatCompletionToolChoiceMode,
+        ChatCompletionToolChoiceOption,
         ChatCompletionUserMessageContent,
         CreateChatCompletionRequest,
+        CreateChatCompletionResponse,
         OpenAIClient;
 import 'package:vitals_core/src/ai/ai_agent.dart' show AIAgent;
+import 'package:vitals_core/src/ai/ai_mcp_client.dart';
 import 'package:vitals_core/src/api/providers/date_time_provider.dart' show DateTimeProvider;
 import 'package:vitals_core/src/api/storage/database/database.dart';
 import 'package:vitals_core/src/model/ai_session/ai_session.dart' show AISession;
@@ -15,6 +23,7 @@ import 'package:vitals_core/src/model/message/message.dart' show Message, Messag
 import 'package:vitals_core/src/model/message/usage_data.dart';
 import 'package:vitals_core/src/utils/const/prompts.dart';
 import 'package:vitals_core/src/utils/const/query_fields.dart' show kUnixTimeFieldName;
+import 'package:vitals_core/src/utils/extensions/ai_extensions.dart';
 import 'package:vitals_utils/vitals_utils.dart';
 
 final class AIAgentImpl extends Disposable implements AIAgent {
@@ -24,6 +33,7 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     this._operationService,
     this._dateTimeProvider,
     this._database,
+    this._mcpClient,
   ) {
     _options.add(options);
     _database.session.streamById(options.key, sendFirst: true).listen((data) {
@@ -40,11 +50,13 @@ final class AIAgentImpl extends Disposable implements AIAgent {
   }
 
   late final _options = stateOf<AISession>();
+  final AiMcpClient _mcpClient;
   final Database _database;
   final OpenAIClient _client;
   final OperationService _operationService;
   late final _context = stateOf<List<Message>>(List.unmodifiable([]));
   final DateTimeProvider _dateTimeProvider;
+  final stopwatch = Stopwatch();
 
   Future<Either<BaseError, AIAgent>> init() => _database.session.containsId(options.key).then((result) {
         if (!result.getOrElse(() => false)) {
@@ -68,7 +80,7 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     String text, {
     double? temperature,
     bool isKeepContext = true,
-  }) {
+  }) async {
     info('Temperature: $temperature\nisKeepContext: $isKeepContext\nRequest:$text');
     final current = _dateTimeProvider.current;
     final latest = Message(
@@ -78,68 +90,150 @@ final class AIAgentImpl extends Disposable implements AIAgent {
       unixTime: current.millisecondsSinceEpoch,
       sessionKey: options.key,
     );
-    _database.messages.add(latest);
-    final stopwatch = Stopwatch();
+    await _database.messages.add(latest);
+    final request = await _getRequest(
+      text,
+      latest.id,
+      temperature: temperature,
+      isKeepContext: isKeepContext,
+    );
     return _summarizer(latest).then(
-      (r) => _operationService.safeAsyncOp(() async {
-        final history = (await _database.messages.query(
-                "_id != '${latest.id}' AND sessionKey == '${options.key}' AND isActive == true  SORT($kUnixTimeFieldName ASC)"))
-            .getOrElse(() => List<Message>.unmodifiable([]));
+      (r) => _operationService.safeAsyncOp(() {
         info('Start request');
-        stopwatch.start();
+        stopwatch
+          ..reset()
+          ..start();
         return _client.createChatCompletion(
-          request: CreateChatCompletionRequest(
-            model: ChatCompletionModel.modelId(_options.value.model),
-            temperature: temperature,
-            messages: [
-              if (_options.value.systemPrompt != null)
-                ChatCompletionMessage.system(
-                  content: _options.value.systemPrompt!,
-                ),
-              if (isKeepContext) ...history.map((m) => m.toChatCompletionMessage),
-              ChatCompletionMessage.user(
-                content: ChatCompletionUserMessageContent.string(text),
-              ),
-            ],
-          ),
+          request: request,
         );
       }).then((result) {
-        stopwatch.stop();
+        stopwatch
+          ..stop()
+          ..reset();
         info(result.toString());
-        return result.map((r) {
-          final current = _dateTimeProvider.current;
-          final result = r.choices.first.let(
-            (it) => Message(
-              id: KSUID.generate(date: current).asString,
-              role: MessageRoles.assistant,
-              text: it.message.content.orEmpty,
-              unixTime: current.millisecondsSinceEpoch,
-              sessionKey: options.key,
-              usage: r.usage?.let(
-                (it) => UsageData(
-                  requestTokens: it.promptTokens,
-                  responseTokens: it.completionTokens,
-                  totalTokens: it.totalTokens,
-                  time: stopwatch.elapsed,
-                ),
+        return result.fold(
+          (l) async => left(l),
+          (r) async {
+            final choice = r.choices.first;
+            return (choice.finishReason == ChatCompletionFinishReason.toolCalls
+                    ? _functionCall(request, choice.message.toolCalls!.first)
+                    : Future<Either<BaseError, CreateChatCompletionResponse>>.value(right(r)))
+                .then(
+              (v) => v.fold(
+                (l) async => left(l),
+                (r) {
+                  final result = _getMessage(r);
+                  _database.messages.add(result);
+                  return right(result);
+                },
               ),
-              // data: _operationService
-              //     .safeSyncOp(
-              //       () => MessageData.fromJson(
-              //         jsonDecode(it.message.content.orEmpty) as Map<String, dynamic>,
-              //       ),
-              //     )
-              //     .fold(
-              //       (l) => null,
-              //       (r) => r,
-              //     ),
-            ),
-          );
-          _database.messages.add(result);
-          return result;
-        });
+            );
+          },
+        );
       }),
     );
+  }
+
+  Future<CreateChatCompletionRequest> _getRequest(
+    String text,
+    String latestId, {
+    double? temperature,
+    bool isKeepContext = true,
+  }) async {
+    final history = (await _database.messages.query(
+      "_id != '$latestId' AND sessionKey == '${options.key}' AND isActive == true  SORT($kUnixTimeFieldName ASC)",
+    ))
+        .getOrElse(() => List<Message>.unmodifiable([]));
+
+    final tools = await _mcpClient.listTools().then(
+          (v) => v
+              .getOrElse(() => [])
+              .map(
+                (e) => e.toFunctionObject.toChatCompletionTool,
+              )
+              .toList(),
+        );
+    return CreateChatCompletionRequest(
+      model: ChatCompletionModel.modelId(_options.value.model),
+      temperature: temperature,
+      messages: [
+        if (_options.value.systemPrompt != null)
+          ChatCompletionMessage.system(
+            content: _options.value.systemPrompt!,
+          ),
+        if (isKeepContext) ...history.map((m) => m.toChatCompletionMessage),
+        ChatCompletionMessage.user(
+          content: ChatCompletionUserMessageContent.string(text),
+        ),
+      ],
+      tools: tools,
+      //toolChoice: const ChatCompletionToolChoiceOption.mode(ChatCompletionToolChoiceMode.auto),
+    );
+  }
+
+  Message _getMessage(CreateChatCompletionResponse response) {
+    final choice = response.choices.first;
+    final current = _dateTimeProvider.current;
+    return choice.let(
+      (it) => Message(
+        id: KSUID.generate(date: current).asString,
+        role: MessageRoles.assistant,
+        text: it.message.content.orEmpty,
+        unixTime: current.millisecondsSinceEpoch,
+        sessionKey: options.key,
+        usage: response.usage?.let(
+          (it) => UsageData(
+            requestTokens: it.promptTokens,
+            responseTokens: it.completionTokens,
+            totalTokens: it.totalTokens,
+            time: stopwatch.elapsed,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<Either<BaseError, CreateChatCompletionResponse>> _functionCall(
+    CreateChatCompletionRequest request,
+    ChatCompletionMessageToolCall toolCall,
+  ) {
+    info('functionCall');
+    return _mcpClient
+        .callTool(
+          toolCall.function.name,
+          jsonDecode(toolCall.function.arguments) as Map<String, dynamic>,
+        )
+        .then(
+          (v) => v.fold(
+            (l) async => left(l),
+            (r) {
+              info('callTool result: ${r.toJson()}');
+              return _operationService
+                  .safeAsyncOp(
+                () => _client.createChatCompletion(
+                  request: request.copyWith(
+                    messages: [
+                      ...request.messages,
+                      ChatCompletionMessage.assistant(
+                        toolCalls: [
+                          toolCall,
+                        ],
+                      ),
+                      ChatCompletionMessage.tool(
+                        toolCallId: toolCall.id,
+                        content: json.encode(r.toJson()),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+                  .then((v) {
+                info('Response with tool result: $v');
+                return v;
+              });
+            },
+          ),
+        );
   }
 
   @override
@@ -167,7 +261,9 @@ final class AIAgentImpl extends Disposable implements AIAgent {
       return;
     }
     info('Start compression');
-    final stopwatch = Stopwatch()..start();
+    stopwatch
+      ..reset()
+      ..start();
     await _operationService
         .safeAsyncOp(
       () => _client.createChatCompletion(
@@ -184,7 +280,9 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     )
         .then((result) {
       info('Compression result: $result');
-      stopwatch.stop();
+      stopwatch
+        ..reset()
+        ..stop();
       return result.map((r) {
         final current = _dateTimeProvider.current;
         final result = r.choices.first.let(
