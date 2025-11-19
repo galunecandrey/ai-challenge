@@ -34,6 +34,13 @@ abstract class Defines {
       );
 
   @lazySingleton
+  @Named('GitHubAIKey')
+  String get gitHubAIKey => const String.fromEnvironment(
+    'GITHUB_AI_KEY',
+    defaultValue: 'none',
+  );
+
+  @lazySingleton
   @Named('huggingfaceAIKey')
   String get huggingfaceAIKey => const String.fromEnvironment(
         'HUGGINGFACE_AI_KEY',
