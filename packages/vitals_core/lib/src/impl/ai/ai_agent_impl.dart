@@ -2,14 +2,13 @@
 import 'dart:convert';
 
 import 'package:ksuid/ksuid.dart';
+import 'package:mcp_client/mcp_client.dart' show TextContent;
 import 'package:openai_dart/openai_dart.dart'
     show
         ChatCompletionFinishReason,
         ChatCompletionMessage,
         ChatCompletionMessageToolCall,
         ChatCompletionModel,
-        ChatCompletionToolChoiceMode,
-        ChatCompletionToolChoiceOption,
         ChatCompletionUserMessageContent,
         CreateChatCompletionRequest,
         CreateChatCompletionResponse,
@@ -38,7 +37,7 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     _options.add(options);
     _database.session.streamById(options.key, sendFirst: true).listen((data) {
       data.forEach(_options.add);
-    });
+    }).cancelable(cancelable);
     _database.messages
         .streamQuery(
       "sessionKey == '${options.key}' AND isCompressed == false SORT($kUnixTimeFieldName DESC)",
@@ -46,7 +45,10 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     )
         .listen((data) {
       data.forEach(_context.add);
-    });
+    }).cancelable(cancelable);
+    Stream.periodic(const Duration(minutes: 3)).listen((v) {
+      runPlannerTick();
+    }).cancelable(cancelable);
   }
 
   late final _options = stateOf<AISession>();
@@ -64,6 +66,51 @@ final class AIAgentImpl extends Disposable implements AIAgent {
         }
         return right(this);
       });
+
+  Future<Either<BaseError, Message>> runPlannerTick() async => _mcpClient.callTool(
+        'reminder_summary',
+        {},
+      ).then(
+        (summaryResult) => summaryResult.fold(
+          (l) async => left(l),
+          (summary) {
+            final userPrompt = '''
+Here is the current reminder summary JSON:
+
+${(summary.content.first as TextContent).text}
+
+Please:
+1. Produce a natural-language summary for the user (max ~10 bullet points).
+2. Suggest the top 3 things they should focus on next.
+3. If something is overdue or due soon, consider calling MCP tools to:
+   - mark them done (if it makes sense), or
+   - create follow-up reminders.
+''';
+            info('Summary prompt: $userPrompt');
+            return _operationService
+                .safeAsyncOp(
+                  () => _client.createChatCompletion(
+                    request: CreateChatCompletionRequest(
+                      model: ChatCompletionModel.modelId(_options.value.model),
+                      messages: [
+                        ChatCompletionMessage.user(
+                          content: ChatCompletionUserMessageContent.string(userPrompt),
+                        ),
+                      ],
+                      //toolChoice: const ChatCompletionToolChoiceOption.mode(ChatCompletionToolChoiceMode.auto),
+                    ),
+                  ),
+                )
+                .then(
+                  (resultSummary) => resultSummary.fold((l) async => left(l), (r) {
+                    final message = _getMessage(r, title: '--- PLANNER SUMMARY ---');
+                    _database.messages.add(message.copyWith(isActive: false));
+                    return right(message);
+                  }),
+                );
+          },
+        ),
+      );
 
   @override
   void updateSystemPrompt(String prompt) {
@@ -171,14 +218,14 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     );
   }
 
-  Message _getMessage(CreateChatCompletionResponse response) {
+  Message _getMessage(CreateChatCompletionResponse response, {String? title}) {
     final choice = response.choices.first;
     final current = _dateTimeProvider.current;
     return choice.let(
       (it) => Message(
         id: KSUID.generate(date: current).asString,
         role: MessageRoles.assistant,
-        text: it.message.content.orEmpty,
+        text: (title != null ? '$title\n' : '') + it.message.content.orEmpty,
         unixTime: current.millisecondsSinceEpoch,
         sessionKey: options.key,
         usage: response.usage?.let(
@@ -197,7 +244,7 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     CreateChatCompletionRequest request,
     ChatCompletionMessageToolCall toolCall,
   ) {
-    info('functionCall');
+    info('functionCall: ${toolCall.function.arguments}');
     return _mcpClient
         .callTool(
           toolCall.function.name,
@@ -255,7 +302,8 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     Message latest,
   ) async {
     final history = (await _database.messages.query(
-            "_id != '${latest.id}' AND sessionKey == '${options.key}' AND isActive == true  SORT($kUnixTimeFieldName ASC)"))
+      "_id != '${latest.id}' AND sessionKey == '${options.key}' AND isActive == true  SORT($kUnixTimeFieldName ASC)",
+    ))
         .getOrElse(() => List<Message>.unmodifiable([]));
     if (history.length < 50) {
       return;

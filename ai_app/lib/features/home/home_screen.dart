@@ -27,7 +27,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
-              'Day 11',
+              'Day 12',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -37,7 +37,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               tabs: [
                 //for (final model in _kHuggingFaceModels)
                 Tab(
-                  text: 'First MCP tool',
+                  text: 'Planner + MCP',
                 ),
               ],
             ),
@@ -47,7 +47,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               //for (final model in _kHuggingFaceModels)
               ChatRoomScreen(
                 options: AISession(
-                  key: 'key5',
+                  key: 'key_2025_11_20_07_48',
                   name: 'Assistant',
                   model: 'gpt-5-mini',
                 ),

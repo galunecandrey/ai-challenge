@@ -3,9 +3,9 @@ import 'dart:io' show Process;
 import 'package:mcp_client/mcp_client.dart';
 
 Future<void> main(List<String> arguments) async {
-  await Process.start(
+  final process = await Process.start(
     'dart',
-    ['bin/github_mcp_server.dart'],
+    ['bin/reminder/server/reminder_mcp_server.dart'],
     environment: {
       'GITHUB_TOKEN': arguments[0],
     },
