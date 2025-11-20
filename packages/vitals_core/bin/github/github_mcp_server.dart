@@ -1,6 +1,8 @@
+//ignore_for_file: avoid_dynamic_calls
 import 'dart:convert';
 import 'dart:io';
 
+//ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:mcp_server/mcp_server.dart';
 
@@ -21,7 +23,6 @@ Future<void> main() async {
     capabilities: ServerCapabilities.simple(
       tools: true,
       resources: true,
-      prompts: false,
     ),
   );
 
@@ -146,11 +147,15 @@ void _registerGithubListReposTool(Server server) {
       final summary = StringBuffer()
         ..writeln('Found ${data.length} repositories for "$owner" (page $page):')
         ..writeln()
-        ..writeln(data
-            .take(10)
-            .map((repo) => '- ${repo['full_name']} (⭐ ${repo['stargazers_count']}, '
-                'visibility: ${repo['visibility'] ?? 'unknown'})')
-            .join('\n'));
+        ..writeln(
+          data
+              .take(10)
+              .map(
+                (repo) => '- ${repo['full_name']} (⭐ ${repo['stargazers_count']}, '
+                    'visibility: ${repo['visibility'] ?? 'unknown'})',
+              )
+              .join('\n'),
+        );
 
       final jsonString = _prettyJson(data);
 
@@ -210,12 +215,14 @@ void _registerGithubGetRepoTool(Server server) {
 
       final jsonString = _prettyJson(data);
 
-      return CallToolResult(content: [
-        TextContent(text: summary.toString()),
-        TextContent(
-          text: '\n\n---\nRaw JSON:\n```json\n$jsonString\n```',
-        ),
-      ]);
+      return CallToolResult(
+        content: [
+          TextContent(text: summary.toString()),
+          TextContent(
+            text: '\n\n---\nRaw JSON:\n```json\n$jsonString\n```',
+          ),
+        ],
+      );
     },
   );
 }
@@ -291,12 +298,14 @@ void _registerGithubListIssuesTool(Server server) {
 
       final jsonString = _prettyJson(data);
 
-      return CallToolResult(content: [
-        TextContent(text: summary.toString()),
-        TextContent(
-          text: '\n\n---\nRaw JSON:\n```json\n$jsonString\n```',
-        ),
-      ]);
+      return CallToolResult(
+        content: [
+          TextContent(text: summary.toString()),
+          TextContent(
+            text: '\n\n---\nRaw JSON:\n```json\n$jsonString\n```',
+          ),
+        ],
+      );
     },
   );
 }
