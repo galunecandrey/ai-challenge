@@ -1,11 +1,12 @@
+//ignore_for_file: avoid_print
 import 'dart:io' show Process;
 
 import 'package:mcp_client/mcp_client.dart';
 
 Future<void> main(List<String> arguments) async {
-  final process = await Process.start(
+  await Process.start(
     'dart',
-    ['bin/reminder/server/reminder_mcp_server.dart'],
+    ['bin/composition/server.dart'],
     environment: {
       'GITHUB_TOKEN': arguments[0],
     },
@@ -49,7 +50,7 @@ Future<void> main(List<String> arguments) async {
   print('=========================');
   print('LIST OG TOOLS');
   print('=========================');
-  int number = 1;
+  var number = 1;
   resultListTools?.forEach((tool) {
     print('---------Tool $number----------');
     print('Name: ${tool.name}');

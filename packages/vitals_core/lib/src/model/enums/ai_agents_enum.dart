@@ -7,7 +7,6 @@ enum AIAgentsOptions {
     options: AISession(
       key: 'simple',
       name: 'gpt-5',
-      model: 'gpt-5',
     ),
   ),
   simpleWithByStep(
@@ -15,7 +14,6 @@ enum AIAgentsOptions {
       key: 'simpleWithByStep',
       name: 'By Step',
       systemPrompt: kSystemStepByStep,
-      model: 'gpt-5',
     ),
   ),
   simpleGPT5mini(
@@ -43,7 +41,6 @@ enum AIAgentsOptions {
       key: 'physicist',
       name: 'Physicist',
       systemPrompt: kSystemPhysicist,
-      model: 'gpt-5',
     ),
   ),
   mathematician(
@@ -51,7 +48,6 @@ enum AIAgentsOptions {
       key: 'mathematician',
       name: 'Mathematician',
       systemPrompt: kSystemMathematician,
-      model: 'gpt-5',
     ),
   ),
   philosopher(
@@ -59,7 +55,6 @@ enum AIAgentsOptions {
       key: 'philosopher',
       name: 'Philosopher',
       systemPrompt: kSystemPhilosopher,
-      model: 'gpt-5',
     ),
   ),
   multirole(
@@ -67,7 +62,6 @@ enum AIAgentsOptions {
       key: 'multirole',
       name: 'Multi',
       systemPrompt: kSystemMulti,
-      model: 'gpt-5',
     ),
   ),
   sao10K(

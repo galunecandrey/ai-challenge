@@ -46,9 +46,9 @@ final class AIAgentImpl extends Disposable implements AIAgent {
         .listen((data) {
       data.forEach(_context.add);
     }).cancelable(cancelable);
-    Stream.periodic(const Duration(minutes: 3)).listen((v) {
-      runPlannerTick();
-    }).cancelable(cancelable);
+    // Stream.periodic(const Duration(minutes: 3)).listen((v) {
+    //   runPlannerTick();
+    // }).cancelable(cancelable);
   }
 
   late final _options = stateOf<AISession>();
@@ -244,7 +244,7 @@ Please:
     CreateChatCompletionRequest request,
     ChatCompletionMessageToolCall toolCall,
   ) {
-    info('functionCall: ${toolCall.function.arguments}');
+    info('functionCall: ${toolCall.function.name} ${toolCall.function.arguments}');
     return _mcpClient
         .callTool(
           toolCall.function.name,
@@ -254,29 +254,35 @@ Please:
           (v) => v.fold(
             (l) async => left(l),
             (r) {
-              info('callTool result: ${r.toJson()}');
+              final newRequest = request.copyWith(
+                messages: [
+                  ...request.messages,
+                  ChatCompletionMessage.assistant(
+                    toolCalls: [
+                      toolCall,
+                    ],
+                  ),
+                  ChatCompletionMessage.tool(
+                    toolCallId: toolCall.id,
+                    content: json.encode(r.toJson()),
+                  ),
+                ],
+              );
+              info('New request with tool result: $newRequest');
               return _operationService
                   .safeAsyncOp(
                 () => _client.createChatCompletion(
-                  request: request.copyWith(
-                    messages: [
-                      ...request.messages,
-                      ChatCompletionMessage.assistant(
-                        toolCalls: [
-                          toolCall,
-                        ],
-                      ),
-                      ChatCompletionMessage.tool(
-                        toolCallId: toolCall.id,
-                        content: json.encode(r.toJson()),
-                      ),
-                    ],
-                  ),
+                  request: newRequest,
                 ),
               )
                   .then((v) {
                 info('Response with tool result: $v');
-                return v;
+                return v.fold((l) async => left(l), (r) {
+                  final newChoice = r.choices.first;
+                  return newChoice.finishReason == ChatCompletionFinishReason.toolCalls
+                      ? _functionCall(newRequest, newChoice.message.toolCalls!.first)
+                      : Future.value(right(r));
+                });
               });
             },
           ),
