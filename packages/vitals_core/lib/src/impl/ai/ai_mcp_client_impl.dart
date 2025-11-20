@@ -1,7 +1,7 @@
 import 'package:mcp_client/mcp_client.dart' show CallToolResult, Client, McpClient, Tool, TransportConfig;
 import 'package:vitals_core/src/ai/ai_mcp_client.dart' show AiMcpClient;
 import 'package:vitals_utils/vitals_utils.dart'
-    show AsyncLazy, BaseError, Disposable, Either, OperationService, asyncLazy, left;
+    show AsyncLazy, BaseError, Disposable, Either, OperationService, asyncLazy, info, left;
 
 class AiMcpClientImpl extends Disposable implements AiMcpClient {
   final OperationService _operationService;
@@ -16,28 +16,39 @@ class AiMcpClientImpl extends Disposable implements AiMcpClient {
   }
 
   @override
-  Future<Either<BaseError, List<Tool>>> listTools() => _operationService.safeAsyncOp(() => client).then(
-        (v) => v.fold(
-          (l) async => left(l),
-          (r) => _operationService.safeAsyncOp(
-            () => r.listTools(),
+  Future<Either<BaseError, List<Tool>>> listTools() {
+    info('MCPClient.listTools');
+    return _operationService.safeAsyncOp(() => client).then(
+          (v) => v.fold(
+            (l) async => left(l),
+            (r) => _operationService.safeAsyncOp(
+              () => r.listTools().then((v) {
+                info('MCPClient.listTools result: ${v.map((v) => v.toJson())}');
+                return v;
+              }),
+            ),
           ),
-        ),
-      );
+        );
+  }
 
   @override
   Future<Either<BaseError, CallToolResult>> callTool(
     String name,
     Map<String, dynamic> toolArguments,
-  ) =>
-      _operationService.safeAsyncOp(() => client).then(
-            (v) => v.fold(
-              (l) async => left(l),
-              (r) => _operationService.safeAsyncOp(
-                () => r.callTool(name, toolArguments),
-              ),
+  ) {
+    info('MCPClient.callTool');
+    return _operationService.safeAsyncOp(() => client).then(
+          (v) => v.fold(
+            (l) async => left(l),
+            (r) => _operationService.safeAsyncOp(
+              () => r.callTool(name, toolArguments).then((v) {
+                info('MCPClient.callTool.result: ${v.toJson()}');
+                return v;
+              }),
             ),
-          );
+          ),
+        );
+  }
 
   Future<Client> _connectClient(String token) async {
     final config = McpClient.simpleConfig(
@@ -73,6 +84,7 @@ class AiMcpClientImpl extends Disposable implements AiMcpClient {
       config: config,
       transportConfig: transportConfig,
     );
+    info(result.fold((l) => l.toString(), (r) => r.toString()));
 
     return result.fold(
       (client) => client,
