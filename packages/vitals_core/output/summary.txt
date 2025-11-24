@@ -1,1 +1,21 @@
-This is some test content about Flutter MCP tools.
+Repository: galunecandrey/ai-challenge
+Total branches: 14
+
+Branch list (name - short description inferred from branch name):
+- feature/Day_1_Simple_AI_client - initial simple AI client implementation
+- feature/Day_2_json_scheme - JSON schema support/definition
+- feature/Day_3_Communication - communication features
+- feature/Day_4_Different_reasoning_methods - multiple reasoning methods
+- feature/Day_5_Temperature - temperature / randomness controls
+- feature/Day_6_Model_Versions - support for different model versions
+- feature/Day_7_Working_with_Tokens - token handling and usage
+- feature/Day_8_Conversation_Compression - conversation compression techniques
+- feature/Day_9_External_Storage - external storage integration
+- feature/Day_10_MCP_connection - MCP connection setup
+- feature/Day_11_First_MCP_tool - initial MCP tool implementation
+- feature/Day_12_Planner+MCP - planner integrated with MCP
+- feature/Day_13_Composition_of_MCP_tools - composing multiple MCP tools
+- main - main/default branch
+
+Summary:
+The repository contains a main branch and 13 feature branches named sequentially Day_1 through Day_13. The feature branches suggest a structured, day-by-day progression building capabilities: starting with a simple AI client and JSON schema support, then adding communication, diverse reasoning methods, temperature control, model versioning, token management, conversation compression, and external storage. Later days focus on MCP (a middleware/tooling platform) connection and tools, including planner integration and composition of MCP tools. This indicates an incremental learning or challenge-style development approach, progressively adding features and integrations related to AI client functionality and MCP tooling.

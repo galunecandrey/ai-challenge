@@ -1,8 +1,12 @@
+import 'package:vitals_core/src/ai/ai_mcp_client.dart';
 import 'package:vitals_core/src/model/ai_session/ai_session.dart' show AISession;
 import 'package:vitals_core/src/model/message/message.dart';
 import 'package:vitals_utils/vitals_utils.dart';
 
 abstract interface class AIAgent implements Disposable {
+
+  void addMCPClient(AiMcpClient client);
+
   void updateSystemPrompt(String prompt);
 
   void removeSystemPrompt();

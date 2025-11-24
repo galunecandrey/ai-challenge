@@ -32,7 +32,6 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     this._operationService,
     this._dateTimeProvider,
     this._database,
-    this._mcpClient,
   ) {
     _options.add(options);
     _database.session.streamById(options.key, sendFirst: true).listen((data) {
@@ -49,10 +48,11 @@ final class AIAgentImpl extends Disposable implements AIAgent {
     // Stream.periodic(const Duration(minutes: 3)).listen((v) {
     //   runPlannerTick();
     // }).cancelable(cancelable);
+    _init();
   }
 
   late final _options = stateOf<AISession>();
-  final AiMcpClient _mcpClient;
+  late final _mcpClients = stateOf<List<AiMcpClient>>(List.unmodifiable([]));
   final Database _database;
   final OpenAIClient _client;
   final OperationService _operationService;
@@ -60,14 +60,15 @@ final class AIAgentImpl extends Disposable implements AIAgent {
   final DateTimeProvider _dateTimeProvider;
   final stopwatch = Stopwatch();
 
-  Future<Either<BaseError, AIAgent>> init() => _database.session.containsId(options.key).then((result) {
+  Future<Either<BaseError, AIAgent>> _init() => _database.session.containsId(options.key).then((result) {
         if (!result.getOrElse(() => false)) {
           _database.session.add(options);
         }
         return right(this);
       });
 
-  Future<Either<BaseError, Message>> runPlannerTick() async => _mcpClient.callTool(
+  Future<Either<BaseError, Message>> runPlannerTick() async =>
+      _mcpClients.value.find((v) => v.isContainsTool('reminder_summary'))!.callTool(
         'reminder_summary',
         {},
       ).then(
@@ -146,7 +147,7 @@ Please:
     );
     return _summarizer(latest).then(
       (r) => _operationService.safeAsyncOp(() {
-        info('Start request');
+        info('Start chat completion request');
         stopwatch
           ..reset()
           ..start();
@@ -157,7 +158,7 @@ Please:
         stopwatch
           ..stop()
           ..reset();
-        info(result.toString());
+        info('Chat completion request result: $result');
         return result.fold(
           (l) async => left(l),
           (r) async {
@@ -192,14 +193,21 @@ Please:
     ))
         .getOrElse(() => List<Message>.unmodifiable([]));
 
-    final tools = await _mcpClient.listTools().then(
-          (v) => v
-              .getOrElse(() => [])
-              .map(
-                (e) => e.toFunctionObject.toChatCompletionTool,
-              )
-              .toList(),
-        );
+    final tools = await Future.wait([
+      for (final mcp in _mcpClients.value)
+        mcp.listTools().then(
+              (v) => v
+                  .getOrElse(() => [])
+                  .map(
+                    (e) => e.toFunctionObject.toChatCompletionTool,
+                  )
+                  .toList(),
+            ),
+    ]).then(
+      (v) => [
+        for (final list in v) ...list,
+      ],
+    );
     return CreateChatCompletionRequest(
       model: ChatCompletionModel.modelId(_options.value.model),
       temperature: temperature,
@@ -245,7 +253,8 @@ Please:
     ChatCompletionMessageToolCall toolCall,
   ) {
     info('functionCall: ${toolCall.function.name} ${toolCall.function.arguments}');
-    return _mcpClient
+    return _mcpClients.value
+        .find((v) => v.isContainsTool(toolCall.function.name))!
         .callTool(
           toolCall.function.name,
           jsonDecode(toolCall.function.arguments) as Map<String, dynamic>,
@@ -268,7 +277,7 @@ Please:
                   ),
                 ],
               );
-              info('New request with tool result: $newRequest');
+              info('New chat completion request with tool result: $newRequest');
               return _operationService
                   .safeAsyncOp(
                 () => _client.createChatCompletion(
@@ -366,5 +375,17 @@ Please:
         return result;
       });
     });
+  }
+
+  @override
+  void addMCPClient(AiMcpClient client) {
+    _mcpClients.add(
+      List.unmodifiable(
+        [
+          ..._mcpClients.value,
+          client,
+        ],
+      ),
+    );
   }
 }
