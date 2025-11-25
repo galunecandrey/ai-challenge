@@ -1,0 +1,22 @@
+Software architecture has evolved through several major phases over the past
+five decades. Early applications were monolithic by necessity: computing
+resources were limited, development tools were primitive, and distributed
+systems were far too costly to implement.
+
+As hardware improved and networking became more reliable, the industry shifted
+toward multi-tier web architectures. Developers began separating backend logic,
+presentation layers, and databases. This modularity enabled larger teams to
+collaborate without stepping on each other's work.
+
+The next major shift was toward service-oriented architecture, commonly known
+as SOA. It introduced the idea that software systems could be decomposed into
+loosely coupled services, each with a well-defined responsibility. Although SOA
+was powerful, it often required heavyweight infrastructure.
+
+Modern applications increasingly adopt microservices. These small, independently
+deployable components allow fast iteration and horizontal scaling. However,
+they also increase operational complexity, leading to the rise of observability
+tools, distributed tracing, and container orchestration systems like Kubernetes.
+
+Software architecture continues to evolve, influenced by hardware progress,
+developer needs, and the increasing demand for global-scale applications.

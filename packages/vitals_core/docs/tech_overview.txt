@@ -1,0 +1,23 @@
+The Event Processing Engine (EPE) is designed to ingest, transform, and route
+high volumes of structured and semi-structured data in real time. It supports
+a plugin architecture that allows developers to extend its functionality without
+modifying the core runtime.
+
+### Key Components
+
+1. Ingestion Layer
+   Responsible for consuming events from external systems such as message
+   queues, databases, or HTTP endpoints. It performs lightweight validation and
+   forwards events to the processing pipeline.
+
+2. Processing Pipeline
+   The pipeline executes a series of transformations on incoming events.
+   Transformations may include mapping fields, filtering records, aggregating
+   metrics, or enriching events with external data sources.
+
+3. Routing Engine
+   After processing, events are assigned to one or more output sinks based on
+   user-defined routing rules. Supported sinks include Kafka topics, S3 buckets,
+   webhooks, and custom adapters.
+
+### Pseudocode Example
