@@ -37,7 +37,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               tabs: [
                 //for (final model in _kHuggingFaceModels)
                 Tab(
-                  text: 'Day 13. Composition of MCP tools',
+                  text: 'Day 14. Orchestration',
                 ),
               ],
             ),
@@ -47,7 +47,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               //for (final model in _kHuggingFaceModels)
               ChatRoomScreen(
                 options: AISession(
-                  key: 'key_2025_11_20_21_46',
+                  key: 'key_2025_11_24_03_57',
                   name: 'Assistant',
                   model: 'gpt-5-mini',
                 ),
