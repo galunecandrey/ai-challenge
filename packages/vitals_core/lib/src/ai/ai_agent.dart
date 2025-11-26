@@ -4,7 +4,6 @@ import 'package:vitals_core/src/model/message/message.dart';
 import 'package:vitals_utils/vitals_utils.dart';
 
 abstract interface class AIAgent implements Disposable {
-
   void addMCPClient(AiMcpClient client);
 
   void updateSystemPrompt(String prompt);
@@ -15,6 +14,7 @@ abstract interface class AIAgent implements Disposable {
     String text, {
     double? temperature,
     bool isKeepContext = true,
+    bool useRAG = false,
   });
 
   AISession get options;

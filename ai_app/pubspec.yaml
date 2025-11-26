@@ -67,6 +67,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/vector_images/
+    - assets/json/
     - i18next/en-US/
 
   # An image asset can refer to one or more resolution-specific "variants", see

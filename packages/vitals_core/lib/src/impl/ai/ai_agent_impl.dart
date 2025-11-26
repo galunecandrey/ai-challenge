@@ -12,12 +12,17 @@ import 'package:openai_dart/openai_dart.dart'
         ChatCompletionUserMessageContent,
         CreateChatCompletionRequest,
         CreateChatCompletionResponse,
+        CreateEmbeddingRequest,
+        EmbeddingInput,
+        EmbeddingModel,
+        EmbeddingX,
         OpenAIClient;
 import 'package:vitals_core/src/ai/ai_agent.dart' show AIAgent;
 import 'package:vitals_core/src/ai/ai_mcp_client.dart';
 import 'package:vitals_core/src/api/providers/date_time_provider.dart' show DateTimeProvider;
 import 'package:vitals_core/src/api/storage/database/database.dart';
 import 'package:vitals_core/src/model/ai_session/ai_session.dart' show AISession;
+import 'package:vitals_core/src/model/embedding/record/embedding_record.dart' show EmbeddingRecord;
 import 'package:vitals_core/src/model/message/message.dart' show Message, MessageExt, MessageRoles;
 import 'package:vitals_core/src/model/message/usage_data.dart';
 import 'package:vitals_core/src/utils/const/prompts.dart';
@@ -128,8 +133,9 @@ Please:
     String text, {
     double? temperature,
     bool isKeepContext = true,
+    bool useRAG = false,
   }) async {
-    info('Temperature: $temperature\nisKeepContext: $isKeepContext\nRequest:$text');
+    info('Temperature: $temperature\nisKeepContext: $isKeepContext\nRequest:$text\nuseRAG: $useRAG');
     final current = _dateTimeProvider.current;
     final latest = Message(
       id: KSUID.generate(date: current).asString,
@@ -139,7 +145,7 @@ Please:
       sessionKey: options.key,
     );
     await _database.messages.add(latest);
-    final request = await _getRequest(
+    final request = await (useRAG ? _getRAGRequest : _getRequest).call(
       text,
       latest.id,
       temperature: temperature,
@@ -147,7 +153,7 @@ Please:
     );
     return _summarizer(latest).then(
       (r) => _operationService.safeAsyncOp(() {
-        info('Start chat completion request');
+        info('Start chat completion request: $request');
         stopwatch
           ..reset()
           ..start();
@@ -181,6 +187,92 @@ Please:
       }),
     );
   }
+
+  Future<CreateChatCompletionRequest> _getRAGRequest(
+    String text,
+    String latestId, {
+    double? temperature,
+    bool isKeepContext = true,
+  }) async {
+    final response = await _client.createEmbedding(
+      request: CreateEmbeddingRequest(
+        model: const EmbeddingModel.modelId('text-embedding-3-small'),
+        input: EmbeddingInput.string(text),
+      ),
+    );
+
+    final records = await _database.embedding
+        .topKRelevantChunks(
+          queryEmbedding: response.data.first.embeddingVector,
+        )
+        .then((v) => v.getOrElse(() => []));
+
+    final history = (await _database.messages.query(
+      "_id != '$latestId' AND sessionKey == '${options.key}' AND isActive == true  SORT($kUnixTimeFieldName ASC)",
+    ))
+        .getOrElse(() => List<Message>.unmodifiable([]));
+
+    final tools = await Future.wait([
+      for (final mcp in _mcpClients.value)
+        mcp.listTools().then(
+              (v) => v
+                  .getOrElse(() => [])
+                  .map(
+                    (e) => e.toFunctionObject.toChatCompletionTool,
+                  )
+                  .toList(),
+            ),
+    ]).then(
+      (v) => [
+        for (final list in v) ...list,
+      ],
+    );
+    return CreateChatCompletionRequest(
+      model: ChatCompletionModel.modelId(_options.value.model),
+      temperature: temperature,
+      messages: [
+        if (_options.value.systemPrompt != null)
+          ChatCompletionMessage.system(
+            content: _options.value.systemPrompt!,
+          ),
+        if (isKeepContext) ...history.map((m) => m.toChatCompletionMessage),
+        ..._buildRagMessages(question: text, context: _buildContextFromChunks(records)),
+      ],
+      tools: tools,
+      //toolChoice: const ChatCompletionToolChoiceOption.mode(ChatCompletionToolChoiceMode.auto),
+    );
+  }
+
+  String _buildContextFromChunks(List<EmbeddingRecord> chunks) {
+    final buffer = StringBuffer();
+
+    for (final c in chunks) {
+      buffer
+        ..writeln('---')
+        ..writeln('Source: ${c.documentId} [chunk ${c.chunkIndex}]')
+        ..writeln(c.text.trim())
+        ..writeln();
+    }
+
+    return buffer.toString();
+  }
+
+  List<ChatCompletionMessage> _buildRagMessages({
+    required String question,
+    required String context,
+  }) =>
+      [
+        const ChatCompletionMessage.system(
+          content: 'You are a helpful assistant. Use ONLY the provided context to answer. '
+              'If the answer is not in the context, say you do not know.',
+        ),
+        ChatCompletionMessage.system(
+          content: 'Context:\n$context',
+        ),
+        ChatCompletionMessage.user(
+          content: ChatCompletionUserMessageContent.string(question),
+        ),
+      ];
 
   Future<CreateChatCompletionRequest> _getRequest(
     String text,

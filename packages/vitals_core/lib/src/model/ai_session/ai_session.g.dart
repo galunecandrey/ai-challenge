@@ -58,7 +58,7 @@ _$AISessionImpl _$$AISessionImplFromJson(Map<String, dynamic> json) =>
       key: json['key'] as String,
       name: json['name'] as String?,
       systemPrompt: json['systemPrompt'] as String?,
-      model: json['data'] as String? ?? 'gpt-5',
+      model: json['model'] as String? ?? 'gpt-5',
     );
 
 Map<String, dynamic> _$$AISessionImplToJson(_$AISessionImpl instance) =>
@@ -66,5 +66,5 @@ Map<String, dynamic> _$$AISessionImplToJson(_$AISessionImpl instance) =>
       'key': instance.key,
       'name': instance.name,
       'systemPrompt': instance.systemPrompt,
-      'data': instance.model,
+      'model': instance.model,
     };

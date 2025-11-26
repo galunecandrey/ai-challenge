@@ -8,6 +8,8 @@ export 'package:vitals_core/src/api/providers/platform_provider.dart';
 export 'package:vitals_core/src/init_framework.dart';
 export 'package:vitals_core/src/injection/injection.dart';
 export 'package:vitals_core/src/model/ai_session/ai_session.dart';
+export 'package:vitals_core/src/model/embedding/chunk/document_chunk.dart';
+export 'package:vitals_core/src/model/embedding/record/embedding_record.dart';
 export 'package:vitals_core/src/model/enums/ai_agent_types.dart';
 export 'package:vitals_core/src/model/enums/ai_agents_enum.dart';
 export 'package:vitals_core/src/model/error/exception.dart';

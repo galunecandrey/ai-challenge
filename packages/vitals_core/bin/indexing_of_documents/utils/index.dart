@@ -1,11 +1,12 @@
 import 'package:openai_dart/openai_dart.dart';
+import 'package:vitals_core/src/model/embedding/chunk/document_chunk.dart' show DocumentChunk;
+import 'package:vitals_core/src/model/embedding/record/embedding_record.dart';
 
-import '../data/models.dart';
 import '../utils/embed_chunks.dart';
 import '../utils/utils.dart';
 
-/// Build embeddings index from a map of {documentId: fullText}
-Future<EmbeddingIndex> buildIndexFromDocuments(
+/// Build embeddings embedding from a map of {documentId: fullText}
+Future<List<EmbeddingRecord>> buildIndexFromDocuments(
   Map<String, String> docs, {
   required String apiKey,
   int maxTokens = 256,
@@ -24,11 +25,8 @@ Future<EmbeddingIndex> buildIndexFromDocuments(
   // 2. Get embeddings
   final records = await embedChunks(client: client, chunks: allChunks, model: model);
 
-  // 3. Build index object
-  final index = EmbeddingIndex(model: model, records: records);
-
   // Close client if needed
   client.endSession();
 
-  return index;
+  return records;
 }

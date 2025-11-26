@@ -1,4 +1,6 @@
-import '../data/models.dart';
+//ignore_for_file: avoid_print
+
+import 'package:vitals_core/src/model/embedding/chunk/document_chunk.dart' show DocumentChunk;
 
 /// Naive "tokenizer": split by whitespace.
 /// Replace with a real tokenizer if you need accurate token counts.

@@ -1,8 +1,8 @@
 /// A piece of a document after chunking.
 class DocumentChunk {
-  final String id;          // unique within corpus
-  final String documentId;  // original doc id (e.g. filename)
-  final int chunkIndex;     // sequential number
+  final String id; // unique within corpus
+  final String documentId; // original doc id (e.g. filename)
+  final int chunkIndex; // sequential number
   final String text;
 
   DocumentChunk({
@@ -13,14 +13,14 @@ class DocumentChunk {
   });
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'documentId': documentId,
-    'chunkIndex': chunkIndex,
-    'text': text,
-  };
+        'id': id,
+        'documentId': documentId,
+        'chunkIndex': chunkIndex,
+        'text': text,
+      };
 }
 
-/// One embedding row in the index.
+/// One embedding row in the embedding.
 class EmbeddingRecord {
   final String chunkId;
   final List<double> embedding;
@@ -37,15 +37,15 @@ class EmbeddingRecord {
   });
 
   Map<String, dynamic> toJson() => {
-    'chunkId': chunkId,
-    'embedding': embedding,
-    'documentId': documentId,
-    'chunkIndex': chunkIndex,
-    'text': text,
-  };
+        'chunkId': chunkId,
+        'embedding': embedding,
+        'documentId': documentId,
+        'chunkIndex': chunkIndex,
+        'text': text,
+      };
 }
 
-/// The whole index saved to disk.
+/// The whole embedding saved to disk.
 class EmbeddingIndex {
   final String model;
   final List<EmbeddingRecord> records;
@@ -56,7 +56,7 @@ class EmbeddingIndex {
   });
 
   Map<String, dynamic> toJson() => {
-    'model': model,
-    'records': records.map((r) => r.toJson()).toList(),
-  };
+        'model': model,
+        'records': records.map((r) => r.toJson()).toList(),
+      };
 }
