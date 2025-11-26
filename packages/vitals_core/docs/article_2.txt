@@ -1,0 +1,17 @@
+Human-centered design begins with empathy. Before writing a single line of
+code or sketching a prototype, product teams must deeply understand the people
+they are designing for. This includes learning about users' goals, frustrations,
+environment, and workflow.
+
+A common misconception is that human-centered design means implementing every
+feature users request. Instead, its purpose is to identify the underlying
+problems and craft solutions that balance user needs with business constraints
+and technical feasibility.
+
+Rapid prototyping is essential. Low-fidelity wireframes, paper sketches, or
+interactive mockups allow teams to test assumptions quickly. Early testing
+reduces the risk of costly rework later in the development process.
+
+Finally, iteration never ends. Even successful products grow outdated as user
+expectations change. Continuous discovery and feedback loops ensure that products
+remain relevant and deliver meaningful value.

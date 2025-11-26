@@ -1,0 +1,21 @@
+Distributed systems introduce challenges that are not present in single-machine
+applications. The most fundamental issue is the absence of a global clock. When
+multiple systems operate in parallel, coordinating them becomes difficult because
+each system has its own perception of time.
+
+Network communication adds another layer of complexity. Messages can be delayed,
+duplicated, or lost entirely. Fault tolerance mechanisms like retries, timeouts,
+and idempotent operations help mitigate this but can never fully eliminate the
+inherent uncertainty.
+
+Consensus algorithms such as Paxos and Raft enable distributed systems to agree
+on a shared state, but they are notoriously complex to implement. Even with
+these algorithms, real-world deployments suffer from subtle bugs, misconfigured
+timeouts, or network partitions.
+
+Developers often underestimate the difficulty of debugging distributed systems.
+A single error can cascade through multiple services, making root-cause analysis
+slow and unpredictable.
+
+These challenges explain why distributed system expertise remains a highly
+valuable skill in the software industry.
