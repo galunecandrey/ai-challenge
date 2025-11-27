@@ -16,6 +16,7 @@ String detokenize(List<String> tokens) => tokens.join(' ');
 List<DocumentChunk> chunkDocument({
   required String documentId,
   required String text,
+  required String uri,
   int maxTokens = 256,
   int overlapTokens = 50,
 }) {
@@ -42,6 +43,7 @@ List<DocumentChunk> chunkDocument({
         documentId: documentId,
         chunkIndex: chunkIndex,
         text: chunkText,
+        uri: uri,
       ),
     );
 

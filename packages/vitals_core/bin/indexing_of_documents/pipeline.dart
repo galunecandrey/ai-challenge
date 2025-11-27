@@ -1,5 +1,5 @@
 //ignore_for_file: avoid_print
-import 'dart:io' show Directory, File;
+import 'dart:io' show Directory, File, Platform;
 
 import './utils/index.dart';
 import './utils/save.dart';
@@ -7,7 +7,7 @@ import './utils/save.dart';
 Future<void> main(List<String> arguments) async {
   // For demonstration: read all .txt files in ./docs
   final docsDir = Directory('docs');
-  final docs = <String, String>{};
+  final docs = <String, ({String text, String uri})>{};
 
   if (docsDir.existsSync()) {
     await for (final entity in docsDir.list(recursive: true)) {
@@ -15,7 +15,7 @@ Future<void> main(List<String> arguments) async {
           (entity.path.endsWith('.txt') || entity.path.endsWith('.md') || entity.path.endsWith('.dart'))) {
         final id = entity.uri.pathSegments.last; // filename
         final text = await entity.readAsString();
-        docs[id] = text;
+        docs[id] = (text: text, uri: entity.absolute.uri.toFilePath(windows: Platform.isWindows));
       }
     }
   } else {

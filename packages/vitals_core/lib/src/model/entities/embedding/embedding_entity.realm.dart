@@ -14,7 +14,8 @@ class EmbeddingEntity extends _EmbeddingEntity
     String documentId,
     int chunkIndex,
     String text,
-    String model, {
+    String model,
+    String uri, {
     Iterable<double> embedding = const [],
   }) {
     RealmObjectBase.set(this, '_id', chunkId);
@@ -24,6 +25,7 @@ class EmbeddingEntity extends _EmbeddingEntity
     RealmObjectBase.set(this, 'chunkIndex', chunkIndex);
     RealmObjectBase.set(this, 'text', text);
     RealmObjectBase.set(this, 'model', model);
+    RealmObjectBase.set(this, 'uri', uri);
   }
 
   EmbeddingEntity._();
@@ -63,6 +65,11 @@ class EmbeddingEntity extends _EmbeddingEntity
   set model(String value) => RealmObjectBase.set(this, 'model', value);
 
   @override
+  String get uri => RealmObjectBase.get<String>(this, 'uri') as String;
+  @override
+  set uri(String value) => RealmObjectBase.set(this, 'uri', value);
+
+  @override
   Stream<RealmObjectChanges<EmbeddingEntity>> get changes =>
       RealmObjectBase.getChanges<EmbeddingEntity>(this);
 
@@ -83,6 +90,7 @@ class EmbeddingEntity extends _EmbeddingEntity
       'chunkIndex': chunkIndex.toEJson(),
       'text': text.toEJson(),
       'model': model.toEJson(),
+      'uri': uri.toEJson(),
     };
   }
 
@@ -96,6 +104,7 @@ class EmbeddingEntity extends _EmbeddingEntity
         'chunkIndex': EJsonValue chunkIndex,
         'text': EJsonValue text,
         'model': EJsonValue model,
+        'uri': EJsonValue uri,
       } =>
         EmbeddingEntity(
           fromEJson(chunkId),
@@ -103,6 +112,7 @@ class EmbeddingEntity extends _EmbeddingEntity
           fromEJson(chunkIndex),
           fromEJson(text),
           fromEJson(model),
+          fromEJson(uri),
           embedding: fromEJson(ejson['embedding']),
         ),
       _ => raiseInvalidEJson(ejson),
@@ -122,6 +132,7 @@ class EmbeddingEntity extends _EmbeddingEntity
       SchemaProperty('chunkIndex', RealmPropertyType.int),
       SchemaProperty('text', RealmPropertyType.string),
       SchemaProperty('model', RealmPropertyType.string),
+      SchemaProperty('uri', RealmPropertyType.string),
     ]);
   }();
 

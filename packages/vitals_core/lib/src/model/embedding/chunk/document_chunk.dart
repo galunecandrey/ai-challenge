@@ -11,6 +11,7 @@ sealed class DocumentChunk with _$DocumentChunk {
     required String documentId, // original doc id (e.g. filename)
     required int chunkIndex, // sequential number
     required String text,
+    required String uri,
   }) = _DocumentChunk;
 
   factory DocumentChunk.fromJson(Map<String, dynamic> json) => _$DocumentChunkFromJson(json);

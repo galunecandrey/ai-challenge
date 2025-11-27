@@ -5,6 +5,7 @@ export 'package:vitals_core/src/api/providers/ai_agent_provider.dart';
 export 'package:vitals_core/src/api/providers/date_time_provider.dart';
 export 'package:vitals_core/src/api/providers/lifecycle_events_provider.dart';
 export 'package:vitals_core/src/api/providers/platform_provider.dart';
+export 'package:vitals_core/src/api/service/launch_service.dart';
 export 'package:vitals_core/src/init_framework.dart';
 export 'package:vitals_core/src/injection/injection.dart';
 export 'package:vitals_core/src/model/ai_session/ai_session.dart';

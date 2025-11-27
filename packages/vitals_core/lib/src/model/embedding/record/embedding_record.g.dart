@@ -17,6 +17,7 @@ _$EmbeddingRecordImpl _$$EmbeddingRecordImplFromJson(
       chunkIndex: (json['chunkIndex'] as num).toInt(),
       text: json['text'] as String,
       model: json['model'] as String,
+      uri: json['uri'] as String,
     );
 
 Map<String, dynamic> _$$EmbeddingRecordImplToJson(
@@ -28,4 +29,5 @@ Map<String, dynamic> _$$EmbeddingRecordImplToJson(
       'chunkIndex': instance.chunkIndex,
       'text': instance.text,
       'model': instance.model,
+      'uri': instance.uri,
     };

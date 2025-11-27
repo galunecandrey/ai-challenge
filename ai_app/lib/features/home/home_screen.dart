@@ -23,11 +23,11 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-        length: 2,
+        length: 1,
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
-              'Day 17. Reranking and filtering',
+              'Day 18',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -37,10 +37,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               tabs: [
                 //for (final model in _kHuggingFaceModels)
                 Tab(
-                  text: 'Only Bi-Encoder',
-                ),
-                Tab(
-                  text: 'With CrossEncoder',
+                  text: 'Quotes and sources',
                 ),
               ],
             ),
@@ -50,17 +47,8 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               //for (final model in _kHuggingFaceModels)
               ChatRoomScreen(
                 options: AISession(
-                  key: 'rag_key_${DateTime.now().millisecondsSinceEpoch}',
-                  name: 'Bi-Encoder',
-                  model: 'gpt-5-mini',
-                ),
-                type: AIAgentTypes.deff,
-              ),
-
-              ChatRoomScreen(
-                options: AISession(
-                  key: 'no_rag_key_${DateTime.now().millisecondsSinceEpoch}',
-                  name: 'CrossEncoder',
+                  key: 'key_${DateTime.now().millisecondsSinceEpoch}',
+                  name: 'Assistant',
                   model: 'gpt-5-mini',
                 ),
                 type: AIAgentTypes.deff,

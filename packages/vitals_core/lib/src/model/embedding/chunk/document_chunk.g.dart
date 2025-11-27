@@ -12,6 +12,7 @@ _$DocumentChunkImpl _$$DocumentChunkImplFromJson(Map<String, dynamic> json) =>
       documentId: json['documentId'] as String,
       chunkIndex: (json['chunkIndex'] as num).toInt(),
       text: json['text'] as String,
+      uri: json['uri'] as String,
     );
 
 Map<String, dynamic> _$$DocumentChunkImplToJson(_$DocumentChunkImpl instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$DocumentChunkImplToJson(_$DocumentChunkImpl instance) =>
       'documentId': instance.documentId,
       'chunkIndex': instance.chunkIndex,
       'text': instance.text,
+      'uri': instance.uri,
     };

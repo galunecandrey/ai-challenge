@@ -26,6 +26,7 @@ mixin _$EmbeddingRecord {
   int get chunkIndex => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get model => throw _privateConstructorUsedError;
+  String get uri => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +46,8 @@ abstract class $EmbeddingRecordCopyWith<$Res> {
       String documentId,
       int chunkIndex,
       String text,
-      String model});
+      String model,
+      String uri});
 }
 
 /// @nodoc
@@ -67,6 +69,7 @@ class _$EmbeddingRecordCopyWithImpl<$Res, $Val extends EmbeddingRecord>
     Object? chunkIndex = null,
     Object? text = null,
     Object? model = null,
+    Object? uri = null,
   }) {
     return _then(_value.copyWith(
       chunkId: null == chunkId
@@ -93,6 +96,10 @@ class _$EmbeddingRecordCopyWithImpl<$Res, $Val extends EmbeddingRecord>
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
               as String,
+      uri: null == uri
+          ? _value.uri
+          : uri // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -111,7 +118,8 @@ abstract class _$$EmbeddingRecordImplCopyWith<$Res>
       String documentId,
       int chunkIndex,
       String text,
-      String model});
+      String model,
+      String uri});
 }
 
 /// @nodoc
@@ -131,6 +139,7 @@ class __$$EmbeddingRecordImplCopyWithImpl<$Res>
     Object? chunkIndex = null,
     Object? text = null,
     Object? model = null,
+    Object? uri = null,
   }) {
     return _then(_$EmbeddingRecordImpl(
       chunkId: null == chunkId
@@ -157,6 +166,10 @@ class __$$EmbeddingRecordImplCopyWithImpl<$Res>
           ? _value.model
           : model // ignore: cast_nullable_to_non_nullable
               as String,
+      uri: null == uri
+          ? _value.uri
+          : uri // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -170,7 +183,8 @@ class _$EmbeddingRecordImpl implements _EmbeddingRecord {
       required this.documentId,
       required this.chunkIndex,
       required this.text,
-      required this.model})
+      required this.model,
+      required this.uri})
       : _embedding = embedding;
 
   factory _$EmbeddingRecordImpl.fromJson(Map<String, dynamic> json) =>
@@ -194,10 +208,12 @@ class _$EmbeddingRecordImpl implements _EmbeddingRecord {
   final String text;
   @override
   final String model;
+  @override
+  final String uri;
 
   @override
   String toString() {
-    return 'EmbeddingRecord(chunkId: $chunkId, embedding: $embedding, documentId: $documentId, chunkIndex: $chunkIndex, text: $text, model: $model)';
+    return 'EmbeddingRecord(chunkId: $chunkId, embedding: $embedding, documentId: $documentId, chunkIndex: $chunkIndex, text: $text, model: $model, uri: $uri)';
   }
 
   @override
@@ -213,7 +229,8 @@ class _$EmbeddingRecordImpl implements _EmbeddingRecord {
             (identical(other.chunkIndex, chunkIndex) ||
                 other.chunkIndex == chunkIndex) &&
             (identical(other.text, text) || other.text == text) &&
-            (identical(other.model, model) || other.model == model));
+            (identical(other.model, model) || other.model == model) &&
+            (identical(other.uri, uri) || other.uri == uri));
   }
 
   @JsonKey(ignore: true)
@@ -225,7 +242,8 @@ class _$EmbeddingRecordImpl implements _EmbeddingRecord {
       documentId,
       chunkIndex,
       text,
-      model);
+      model,
+      uri);
 
   @JsonKey(ignore: true)
   @override
@@ -249,7 +267,8 @@ abstract class _EmbeddingRecord implements EmbeddingRecord {
       required final String documentId,
       required final int chunkIndex,
       required final String text,
-      required final String model}) = _$EmbeddingRecordImpl;
+      required final String model,
+      required final String uri}) = _$EmbeddingRecordImpl;
 
   factory _EmbeddingRecord.fromJson(Map<String, dynamic> json) =
       _$EmbeddingRecordImpl.fromJson;
@@ -266,6 +285,8 @@ abstract class _EmbeddingRecord implements EmbeddingRecord {
   String get text;
   @override
   String get model;
+  @override
+  String get uri;
   @override
   @JsonKey(ignore: true)
   _$$EmbeddingRecordImplCopyWith<_$EmbeddingRecordImpl> get copyWith =>
