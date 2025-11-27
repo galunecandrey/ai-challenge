@@ -10,7 +10,7 @@ const kMaxQuickRepliesNumber = 6;
 @injectable
 class ChatRoomViewModel extends ViewModel {
   late AIAgent _agent;
-  final bool isRag;
+  final bool isCrossEncoder;
   late final _isWaiting = stateOf<bool>(false);
 
   bool get isWaiting => _isWaiting.value;
@@ -35,7 +35,7 @@ class ChatRoomViewModel extends ViewModel {
     AIAgentProvider provider,
     @factoryParam AISession? options,
     @factoryParam AIAgentTypes? type,
-  ) : isRag = options?.name == 'RAG' {
+  ) : isCrossEncoder = options?.name == 'CrossEncoder' {
     _agent = provider.get(options!, type: type!);
   }
 
@@ -44,7 +44,9 @@ class ChatRoomViewModel extends ViewModel {
     _agent
         .sendRequest(
       text,
-      useRAG: isRag,
+      useRAG: true,
+      ragThreshold: 0,
+      ragTopN: isCrossEncoder ? 3 : null,
     )
         .then((v) {
       _isWaiting.add(false);

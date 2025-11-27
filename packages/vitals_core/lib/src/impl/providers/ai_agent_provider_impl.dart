@@ -40,37 +40,37 @@ final class AIRepositoryImpl implements AIAgentProvider {
         _operationService,
         _dateTimeProvider,
         _database,
-      )
-        ..addMCPClient(
-          AiMcpClient.create(
-            _operationService,
-            clientConfig: McpClient.simpleConfig(
-              name: 'flutter_sse_client',
-              version: '1.0.0',
-              enableDebugLogging: true,
-            ),
-            transportConfig: const TransportConfig.sse(
-              serverUrl: 'http://localhost:8080/sse',
-              headers: {'User-Agent': 'MCP-Client/1.0'},
-            ),
-          ),
-        )
-        ..addMCPClient(
-          AiMcpClient.create(
-            _operationService,
-            clientConfig: McpClient.simpleConfig(
-              name: 'flutter_streamable_http_client',
-              version: '1.0.0',
-              enableDebugLogging: true,
-            ),
-            transportConfig: TransportConfig.streamableHttp(
-              baseUrl: 'https://api.githubcopilot.com/mcp', // root MCP endpoint
-              headers: {
-                'User-Agent': 'Flutter-MCP-SSE/1.0',
-                'Authorization': 'Bearer $_mcpToken',
-              },
-              useHttp2: true,
-            ),
-          ),
-        );
+      );
+        // ..addMCPClient(
+        //   AiMcpClient.create(
+        //     _operationService,
+        //     clientConfig: McpClient.simpleConfig(
+        //       name: 'flutter_sse_client',
+        //       version: '1.0.0',
+        //       enableDebugLogging: true,
+        //     ),
+        //     transportConfig: const TransportConfig.sse(
+        //       serverUrl: 'http://localhost:8080/sse',
+        //       headers: {'User-Agent': 'MCP-Client/1.0'},
+        //     ),
+        //   ),
+        // )
+        // ..addMCPClient(
+        //   AiMcpClient.create(
+        //     _operationService,
+        //     clientConfig: McpClient.simpleConfig(
+        //       name: 'flutter_streamable_http_client',
+        //       version: '1.0.0',
+        //       enableDebugLogging: true,
+        //     ),
+        //     transportConfig: TransportConfig.streamableHttp(
+        //       baseUrl: 'https://api.githubcopilot.com/mcp', // root MCP endpoint
+        //       headers: {
+        //         'User-Agent': 'Flutter-MCP-SSE/1.0',
+        //         'Authorization': 'Bearer $_mcpToken',
+        //       },
+        //       useHttp2: true,
+        //     ),
+        //   ),
+        // );
 }

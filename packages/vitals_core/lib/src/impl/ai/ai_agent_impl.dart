@@ -134,6 +134,9 @@ Please:
     double? temperature,
     bool isKeepContext = true,
     bool useRAG = false,
+    int ragTopK = 15,
+    double ragThreshold = 0.1,
+    int? ragTopN,
   }) async {
     info('Temperature: $temperature\nisKeepContext: $isKeepContext\nRequest:$text\nuseRAG: $useRAG');
     final current = _dateTimeProvider.current;
@@ -145,12 +148,22 @@ Please:
       sessionKey: options.key,
     );
     await _database.messages.add(latest);
-    final request = await (useRAG ? _getRAGRequest : _getRequest).call(
-      text,
-      latest.id,
-      temperature: temperature,
-      isKeepContext: isKeepContext,
-    );
+    final request = await (useRAG
+        ? _getRAGRequest(
+            text,
+            latest.id,
+            temperature: temperature,
+            isKeepContext: isKeepContext,
+            ragThreshold: ragThreshold,
+            ragTopK: ragTopK,
+            ragTopN: ragTopN,
+          )
+        : _getRequest(
+            text,
+            latest.id,
+            temperature: temperature,
+            isKeepContext: isKeepContext,
+          ));
     return _summarizer(latest).then(
       (r) => _operationService.safeAsyncOp(() {
         info('Start chat completion request: $request');
@@ -193,6 +206,9 @@ Please:
     String latestId, {
     double? temperature,
     bool isKeepContext = true,
+    int ragTopK = 15,
+    double ragThreshold = 0.1,
+    int? ragTopN,
   }) async {
     final response = await _client.createEmbedding(
       request: CreateEmbeddingRequest(
@@ -203,7 +219,11 @@ Please:
 
     final records = await _database.embedding
         .topKRelevantChunks(
+          query: text,
           queryEmbedding: response.data.first.embeddingVector,
+          topK: ragTopK,
+          threshold: ragThreshold,
+          topN: ragTopN,
         )
         .then((v) => v.getOrElse(() => []));
 
