@@ -33,6 +33,8 @@ dependencies:
   path_provider: ^2.1.3
   system_tray: ^2.0.3
   realm: ^20.0.0
+  flutter_linkify: ^6.0.0
+  flutter_text_sniffer: ^4.4.3+5
   vitals_core:
     path: ../packages/vitals_core
   vitals_arch:

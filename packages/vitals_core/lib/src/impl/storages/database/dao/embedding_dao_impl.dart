@@ -52,7 +52,9 @@ final class EmbeddingDaoImpl extends BaseRealmStorage<EmbeddingRecord, Embedding
 
   double _scorePair(List<String> queryTokens, String document, CorpusStats corpusStats) {
     final docTokens = tokenizeToList(document);
-    if (docTokens.isEmpty) return 0.0;
+    if (docTokens.isEmpty) {
+      return 0.0;
+    }
 
     // term frequency по документу
     final tf = <String, int>{};
@@ -200,8 +202,8 @@ class CorpusStats {
 
 CorpusStats buildCorpusStats(List<EmbeddingRecord> chunks) {
   final df = <String, int>{}; // document frequency
-  int docCount = chunks.length;
-  int totalLength = 0;
+  final docCount = chunks.length;
+  var totalLength = 0;
 
   for (final chunk in chunks) {
     final tokens = tokenizeToList(chunk.text);

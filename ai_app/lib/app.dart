@@ -22,6 +22,9 @@ class VitalsSDKExampleApp extends StatelessWidget {
           Provider(
             create: (context) => getIt<DateTimeProvider>(),
           ),
+          Provider(
+            create: (context) => getIt<LaunchService>(),
+          ),
         ],
         child: MaterialApp.router(
           title: 'VitalsApp',

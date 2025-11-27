@@ -14,6 +14,7 @@ sealed class EmbeddingRecord with _$EmbeddingRecord {
     required int chunkIndex,
     required String text,
     required String model,
+    required String uri,
   }) = _EmbeddingRecord;
 
   factory EmbeddingRecord.fromJson(Map<String, dynamic> json) => _$EmbeddingRecordFromJson(json);
@@ -26,6 +27,7 @@ extension EmbeddingRecordExt on EmbeddingRecord {
         chunkIndex,
         text,
         model,
+        uri,
         embedding: embedding,
       );
 }

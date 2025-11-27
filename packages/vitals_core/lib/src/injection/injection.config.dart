@@ -18,6 +18,7 @@ import 'package:http/http.dart' as _i519;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:ksuid/ksuid.dart' as _i488;
 import 'package:logger/logger.dart' as _i974;
+import 'package:open_dir/open_dir.dart' as _i664;
 import 'package:openai_dart/openai_dart.dart' as _i948;
 import 'package:package_info_plus_platform_interface/package_info_platform_interface.dart'
     as _i490;
@@ -28,6 +29,7 @@ import 'package:vitals_core/src/api/providers/device_id_provider.dart' as _i687;
 import 'package:vitals_core/src/api/providers/lifecycle_events_provider.dart'
     as _i182;
 import 'package:vitals_core/src/api/providers/platform_provider.dart' as _i997;
+import 'package:vitals_core/src/api/service/launch_service.dart' as _i193;
 import 'package:vitals_core/src/api/storage/database/dao/ai_session_dao.dart'
     as _i133;
 import 'package:vitals_core/src/api/storage/database/dao/embedding_dao.dart'
@@ -49,6 +51,8 @@ import 'package:vitals_core/src/impl/providers/lifecycle_events_provider_impl.da
 import 'package:vitals_core/src/impl/providers/platform_provider_impl.dart'
     as _i291;
 import 'package:vitals_core/src/impl/providers/vis_db_provider.dart' as _i135;
+import 'package:vitals_core/src/impl/service/launch_service_impl.dart'
+    as _i1001;
 import 'package:vitals_core/src/impl/storages/ai_agent_storage.dart' as _i532;
 import 'package:vitals_core/src/impl/storages/database/dao/ai_session_dao_impl.dart'
     as _i240;
@@ -80,6 +84,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final coreModules = _$CoreModules();
     final defines = _$Defines();
+    gh.lazySingleton<_i664.OpenDir>(() => coreModules.openDir);
     gh.lazySingleton<_i974.LogPrinter>(() => coreModules.logPrinter);
     gh.lazySingleton<_i490.PackageInfoPlatform>(
         () => coreModules.packageInfoPlatform);
@@ -146,6 +151,10 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i865.OperationService>(
         () => _i579.OperationServiceImpl(gh<_i676.ErrorHandler>()));
+    gh.lazySingleton<_i193.LaunchService>(() => _i1001.LaunchServiceImpl(
+          gh<_i865.OperationService>(),
+          gh<_i664.OpenDir>(),
+        ));
     gh.lazySingleton<_i997.PlatformProvider>(
       () => _i291.PlatformProviderImpl(
         gh<_i865.OperationService>(),

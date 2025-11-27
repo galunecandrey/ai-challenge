@@ -39,6 +39,7 @@ Future<List<EmbeddingRecord>> embedChunks({
           chunkIndex: chunk.chunkIndex,
           text: chunk.text,
           model: model,
+          uri: chunk.uri,
         ),
       );
     }
