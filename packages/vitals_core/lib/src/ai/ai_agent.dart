@@ -15,6 +15,9 @@ abstract interface class AIAgent implements Disposable {
     double? temperature,
     bool isKeepContext = true,
     bool useRAG = false,
+    int ragTopK = 15,
+    double ragThreshold = 0.1,
+    int? ragTopN,
   });
 
   AISession get options;

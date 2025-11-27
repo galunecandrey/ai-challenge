@@ -27,7 +27,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
-              'Day 16. First RAG request',
+              'Day 17. Reranking and filtering',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -37,21 +37,21 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               tabs: [
                 //for (final model in _kHuggingFaceModels)
                 Tab(
-                  text: 'RAG',
+                  text: 'Only Bi-Encoder',
                 ),
                 Tab(
-                  text: 'No RAG',
+                  text: 'With CrossEncoder',
                 ),
               ],
             ),
           ),
-          body: const TabBarView(
+          body: TabBarView(
             children: [
               //for (final model in _kHuggingFaceModels)
               ChatRoomScreen(
                 options: AISession(
-                  key: 'rag_key_2025_11_26_07_32',
-                  name: 'RAG',
+                  key: 'rag_key_${DateTime.now().millisecondsSinceEpoch}',
+                  name: 'Bi-Encoder',
                   model: 'gpt-5-mini',
                 ),
                 type: AIAgentTypes.deff,
@@ -59,8 +59,8 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
 
               ChatRoomScreen(
                 options: AISession(
-                  key: 'no_rag_key_2025_11_26_07_32',
-                  name: 'Assistant',
+                  key: 'no_rag_key_${DateTime.now().millisecondsSinceEpoch}',
+                  name: 'CrossEncoder',
                   model: 'gpt-5-mini',
                 ),
                 type: AIAgentTypes.deff,

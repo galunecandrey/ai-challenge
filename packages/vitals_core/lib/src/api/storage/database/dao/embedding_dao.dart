@@ -5,7 +5,10 @@ import 'package:vitals_utils/vitals_utils.dart' show BaseError, Either;
 
 abstract interface class EmbeddingDao implements BaseDao<EmbeddingRecord>, QueryDao<EmbeddingRecord> {
   Future<Either<BaseError, List<EmbeddingRecord>>> topKRelevantChunks({
+    required String query,
     required List<double> queryEmbedding,
-    int topK = 4,
+    int topK = 15,
+    double threshold = 0.1,
+    int? topN,
   });
 }
