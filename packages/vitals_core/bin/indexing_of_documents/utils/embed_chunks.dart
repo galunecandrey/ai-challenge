@@ -1,7 +1,8 @@
 import 'package:collection/collection.dart';
-import 'package:openai_dart/openai_dart.dart' show CreateEmbeddingRequest, EmbeddingInput, EmbeddingModel, OpenAIClient;
-
-import '../data/models.dart';
+import 'package:openai_dart/openai_dart.dart'
+    show CreateEmbeddingRequest, EmbeddingInput, EmbeddingModel, EmbeddingX, OpenAIClient;
+import 'package:vitals_core/src/model/embedding/chunk/document_chunk.dart' show DocumentChunk;
+import 'package:vitals_core/src/model/embedding/record/embedding_record.dart' show EmbeddingRecord;
 
 /// Get embeddings for a list of chunks. Batches to avoid payload limits.
 Future<List<EmbeddingRecord>> embedChunks({
@@ -28,18 +29,16 @@ Future<List<EmbeddingRecord>> embedChunks({
 
     for (var i = 0; i < batch.length; i++) {
       final chunk = batch[i];
-      final emb = response.data[i].embedding;
+      final emb = response.data[i].embeddingVector;
 
       records.add(
         EmbeddingRecord(
           chunkId: chunk.id,
-          embedding: emb.map(
-            vector: (v) => v.value,
-            vectorBase64: (vectorBase64) => throw StateError("Embeddings can't be vectorBase64"),
-          ),
+          embedding: emb,
           documentId: chunk.documentId,
           chunkIndex: chunk.chunkIndex,
           text: chunk.text,
+          model: model,
         ),
       );
     }

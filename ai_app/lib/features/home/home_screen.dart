@@ -23,11 +23,11 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-        length: 1,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
-              'Day 13',
+              'Day 16. First RAG request',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -37,7 +37,10 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               tabs: [
                 //for (final model in _kHuggingFaceModels)
                 Tab(
-                  text: 'Day 14. Orchestration',
+                  text: 'RAG',
+                ),
+                Tab(
+                  text: 'No RAG',
                 ),
               ],
             ),
@@ -47,7 +50,16 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               //for (final model in _kHuggingFaceModels)
               ChatRoomScreen(
                 options: AISession(
-                  key: 'key_2025_11_24_03_57',
+                  key: 'rag_key_2025_11_26_07_32',
+                  name: 'RAG',
+                  model: 'gpt-5-mini',
+                ),
+                type: AIAgentTypes.deff,
+              ),
+
+              ChatRoomScreen(
+                options: AISession(
+                  key: 'no_rag_key_2025_11_26_07_32',
                   name: 'Assistant',
                   model: 'gpt-5-mini',
                 ),

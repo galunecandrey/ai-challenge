@@ -14,6 +14,7 @@ import 'dart:ui' as _i264;
 import 'package:device_info_plus/device_info_plus.dart' as _i833;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:hive/hive.dart' as _i979;
+import 'package:http/http.dart' as _i519;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:ksuid/ksuid.dart' as _i488;
 import 'package:logger/logger.dart' as _i974;
@@ -29,6 +30,8 @@ import 'package:vitals_core/src/api/providers/lifecycle_events_provider.dart'
 import 'package:vitals_core/src/api/providers/platform_provider.dart' as _i997;
 import 'package:vitals_core/src/api/storage/database/dao/ai_session_dao.dart'
     as _i133;
+import 'package:vitals_core/src/api/storage/database/dao/embedding_dao.dart'
+    as _i739;
 import 'package:vitals_core/src/api/storage/database/dao/messages_dao.dart'
     as _i613;
 import 'package:vitals_core/src/api/storage/database/database.dart' as _i109;
@@ -49,6 +52,8 @@ import 'package:vitals_core/src/impl/providers/vis_db_provider.dart' as _i135;
 import 'package:vitals_core/src/impl/storages/ai_agent_storage.dart' as _i532;
 import 'package:vitals_core/src/impl/storages/database/dao/ai_session_dao_impl.dart'
     as _i240;
+import 'package:vitals_core/src/impl/storages/database/dao/embedding_dao_impl.dart'
+    as _i57;
 import 'package:vitals_core/src/impl/storages/database/dao/messages_dao_impl.dart'
     as _i513;
 import 'package:vitals_core/src/impl/storages/database/database_impl.dart'
@@ -59,6 +64,7 @@ import 'package:vitals_core/src/impl/storages/messages_storage.dart' as _i678;
 import 'package:vitals_core/src/init_framework.dart' as _i738;
 import 'package:vitals_core/src/injection/core_modules.dart' as _i900;
 import 'package:vitals_core/src/injection/defines.dart' as _i821;
+import 'package:vitals_core/src/network/logging_client.dart' as _i822;
 import 'package:vitals_utils/vitals_utils.dart' as _i865;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -97,6 +103,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => defines.secureKey,
       instanceName: 'secureKey',
     );
+    gh.lazySingleton<_i519.BaseClient>(() => _i822.LoggingClient());
     gh.lazySingleton<_i182.LifecycleEventsProvider>(
       () => _i163.DefaultLifecycleEventsProviderImpl(),
       dispose: (i) => i.dispose(),
@@ -114,10 +121,12 @@ extension GetItInjectableX on _i174.GetIt {
           key: gh<String>(instanceName: 'huggingfaceAIKey')),
       instanceName: 'huggingfaceAIClient',
     );
-    gh.lazySingleton<_i948.OpenAIClient>(
-        () => coreModules.openAIClient(key: gh<String>(instanceName: 'AIKey')));
     gh.lazySingleton<_i135.DBProvider>(
         () => _i135.DBProvider(gh<_i979.HiveInterface>()));
+    gh.lazySingleton<_i948.OpenAIClient>(() => coreModules.openAIClient(
+          client: gh<_i519.BaseClient>(),
+          key: gh<String>(instanceName: 'AIKey'),
+        ));
     gh.lazySingleton<_i804.DateTimeProvider>(
         () => _i587.DateTimeProviderImpl(gh<_i182.LifecycleEventsProvider>()));
     gh.factory<_i488.KSUID>(
@@ -194,11 +203,18 @@ extension GetItInjectableX on _i174.GetIt {
           operationService: gh<_i865.OperationService>(),
           isTest: gh<bool>(instanceName: 'isTestMode'),
         ));
+    gh.lazySingleton<_i739.EmbeddingDao>(() => _i57.EmbeddingDaoImpl(
+          dbProvider: gh<_i135.DBProvider>(),
+          secureKeyStorage: gh<_i83.SecureKeyStorage>(),
+          operationService: gh<_i865.OperationService>(),
+          isTest: gh<bool>(instanceName: 'isTestMode'),
+        ));
     gh.lazySingleton<_i109.Database>(
       () => _i281.DatabaseImpl(
         gh<_i865.OperationService>(),
         gh<_i613.MessagesDao>(),
         gh<_i133.AISessionDao>(),
+        gh<_i739.EmbeddingDao>(),
       ),
       dispose: _i281.closeDatabase,
     );

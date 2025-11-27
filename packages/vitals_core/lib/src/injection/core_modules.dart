@@ -4,6 +4,7 @@ import 'dart:io' show Directory;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart' show GetIt;
 import 'package:hive/hive.dart' show Hive, HiveInterface;
+import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:ksuid/ksuid.dart' show KSUID;
 import 'package:logger/logger.dart';
@@ -47,7 +48,11 @@ abstract class CoreModules {
   DeviceInfoPlugin get deviceInfoPlugin => DeviceInfoPlugin();
 
   @lazySingleton
-  OpenAIClient openAIClient({@Named('AIKey') required String key}) => OpenAIClient(apiKey: key);
+  OpenAIClient openAIClient({
+    required http.BaseClient client,
+    @Named('AIKey') required String key,
+  }) =>
+      OpenAIClient(apiKey: key, client: client);
 
   @LazySingleton(dispose: disposeHive)
   HiveInterface get hive => Hive;

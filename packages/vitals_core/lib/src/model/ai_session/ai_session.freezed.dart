@@ -167,7 +167,7 @@ class _$AISessionImpl implements _AISession {
 
   @override
   String toString() {
-    return 'AISession(key: $key, name: $name, systemPrompt: $systemPrompt, data: $model)';
+    return 'AISession(key: $key, name: $name, systemPrompt: $systemPrompt, model: $model)';
   }
 
   @override

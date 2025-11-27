@@ -1,3 +1,4 @@
+//ignore_for_file: avoid_print
 import 'dart:io' show Directory, File;
 
 import './utils/index.dart';
@@ -22,11 +23,11 @@ Future<void> main(List<String> arguments) async {
     return;
   }
 
-  final index = await buildIndexFromDocuments(
+  final records = await buildIndexFromDocuments(
     docs,
     apiKey: arguments[0],
   );
 
-  await saveIndexToJsonFile(index, 'output/embedding_index.json');
-  print('Index with ${index.records.length} embeddings saved to embedding_index.json');
+  await saveIndexToJsonFile(records, 'output/embedding_index.json');
+  print('Index with ${records.length} embeddings saved to embedding_index.json');
 }
