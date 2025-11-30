@@ -8,7 +8,8 @@ String buildContextFromChunks(List<EmbeddingRecord> chunks) {
     ..writeln('REQUIREMENTS:')
     ..writeln('1. Your answer must be in pure Markdown.')
     ..writeln(
-        '2. When using information from a chunk, you MUST cite it using its sourceId in square brackets, for example: [S1], [S3].')
+      '2. When using information from a chunk, you MUST cite it using its sourceId in square brackets, for example: [S1], [S3].',
+    )
     ..writeln('3. At the end of the answer you MUST add a section:')
     ..writeln('   ### Sources')
     ..writeln('   - [S1] <source title> (<url>)')
