@@ -27,7 +27,7 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
-              'Day 18',
+              'Day 19',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -37,17 +37,17 @@ class _HomeWidget extends BindableWidget<HomeViewModel> {
               tabs: [
                 //for (final model in _kHuggingFaceModels)
                 Tab(
-                  text: 'Quotes and sources',
+                  text: 'Mini-chat with memory on RAG',
                 ),
               ],
             ),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
               //for (final model in _kHuggingFaceModels)
               ChatRoomScreen(
                 options: AISession(
-                  key: 'key_${DateTime.now().millisecondsSinceEpoch}',
+                  key: 'key_2025_11_30_21_53',
                   name: 'Assistant',
                   model: 'gpt-5-mini',
                 ),
