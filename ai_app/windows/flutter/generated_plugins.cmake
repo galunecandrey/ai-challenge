@@ -5,10 +5,12 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_window
   flutter_udid
+  open_dir_windows
   realm
   screen_retriever
   system_tools
   system_tray
+  url_launcher_windows
   window_manager
 )
 

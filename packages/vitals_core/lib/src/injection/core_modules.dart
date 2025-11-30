@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:ksuid/ksuid.dart' show KSUID;
 import 'package:logger/logger.dart';
+import 'package:open_dir/open_dir.dart' show OpenDir;
 import 'package:openai_dart/openai_dart.dart';
 
 //ignore:depend_on_referenced_packages
@@ -23,6 +24,9 @@ import 'package:vitals_utils/vitals_utils.dart' as utils show OperationService;
 
 @module
 abstract class CoreModules {
+  @lazySingleton
+  OpenDir get openDir => OpenDir();
+
   @lazySingleton
   LogPrinter get logPrinter => PrettyPrinter(
         dateTimeFormat: DateTimeFormat.dateAndTime,

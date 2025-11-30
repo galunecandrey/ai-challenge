@@ -32,6 +32,8 @@ dependencies:
   mcp_client: ^1.0.2
   mcp_server: ^1.0.3
   collection: ^1.18.0
+  url_launcher: ^6.3.0
+  open_dir: ^0.0.2+1
   system_tools:
     path: ../system_tools
   vitals_utils:

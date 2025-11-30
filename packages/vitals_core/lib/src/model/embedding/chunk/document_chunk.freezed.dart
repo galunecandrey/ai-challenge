@@ -25,6 +25,7 @@ mixin _$DocumentChunk {
       throw _privateConstructorUsedError; // original doc id (e.g. filename)
   int get chunkIndex => throw _privateConstructorUsedError; // sequential number
   String get text => throw _privateConstructorUsedError;
+  String get uri => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,7 +39,8 @@ abstract class $DocumentChunkCopyWith<$Res> {
           DocumentChunk value, $Res Function(DocumentChunk) then) =
       _$DocumentChunkCopyWithImpl<$Res, DocumentChunk>;
   @useResult
-  $Res call({String id, String documentId, int chunkIndex, String text});
+  $Res call(
+      {String id, String documentId, int chunkIndex, String text, String uri});
 }
 
 /// @nodoc
@@ -58,6 +60,7 @@ class _$DocumentChunkCopyWithImpl<$Res, $Val extends DocumentChunk>
     Object? documentId = null,
     Object? chunkIndex = null,
     Object? text = null,
+    Object? uri = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -76,6 +79,10 @@ class _$DocumentChunkCopyWithImpl<$Res, $Val extends DocumentChunk>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      uri: null == uri
+          ? _value.uri
+          : uri // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -88,7 +95,8 @@ abstract class _$$DocumentChunkImplCopyWith<$Res>
       __$$DocumentChunkImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String documentId, int chunkIndex, String text});
+  $Res call(
+      {String id, String documentId, int chunkIndex, String text, String uri});
 }
 
 /// @nodoc
@@ -106,6 +114,7 @@ class __$$DocumentChunkImplCopyWithImpl<$Res>
     Object? documentId = null,
     Object? chunkIndex = null,
     Object? text = null,
+    Object? uri = null,
   }) {
     return _then(_$DocumentChunkImpl(
       id: null == id
@@ -124,6 +133,10 @@ class __$$DocumentChunkImplCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      uri: null == uri
+          ? _value.uri
+          : uri // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -135,7 +148,8 @@ class _$DocumentChunkImpl implements _DocumentChunk {
       {required this.id,
       required this.documentId,
       required this.chunkIndex,
-      required this.text});
+      required this.text,
+      required this.uri});
 
   factory _$DocumentChunkImpl.fromJson(Map<String, dynamic> json) =>
       _$$DocumentChunkImplFromJson(json);
@@ -151,10 +165,12 @@ class _$DocumentChunkImpl implements _DocumentChunk {
 // sequential number
   @override
   final String text;
+  @override
+  final String uri;
 
   @override
   String toString() {
-    return 'DocumentChunk(id: $id, documentId: $documentId, chunkIndex: $chunkIndex, text: $text)';
+    return 'DocumentChunk(id: $id, documentId: $documentId, chunkIndex: $chunkIndex, text: $text, uri: $uri)';
   }
 
   @override
@@ -167,13 +183,14 @@ class _$DocumentChunkImpl implements _DocumentChunk {
                 other.documentId == documentId) &&
             (identical(other.chunkIndex, chunkIndex) ||
                 other.chunkIndex == chunkIndex) &&
-            (identical(other.text, text) || other.text == text));
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.uri, uri) || other.uri == uri));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, documentId, chunkIndex, text);
+      Object.hash(runtimeType, id, documentId, chunkIndex, text, uri);
 
   @JsonKey(ignore: true)
   @override
@@ -194,7 +211,8 @@ abstract class _DocumentChunk implements DocumentChunk {
       {required final String id,
       required final String documentId,
       required final int chunkIndex,
-      required final String text}) = _$DocumentChunkImpl;
+      required final String text,
+      required final String uri}) = _$DocumentChunkImpl;
 
   factory _DocumentChunk.fromJson(Map<String, dynamic> json) =
       _$DocumentChunkImpl.fromJson;
@@ -207,6 +225,8 @@ abstract class _DocumentChunk implements DocumentChunk {
   int get chunkIndex;
   @override // sequential number
   String get text;
+  @override
+  String get uri;
   @override
   @JsonKey(ignore: true)
   _$$DocumentChunkImplCopyWith<_$DocumentChunkImpl> get copyWith =>

@@ -7,7 +7,7 @@ import '../utils/utils.dart';
 
 /// Build embeddings embedding from a map of {documentId: fullText}
 Future<List<EmbeddingRecord>> buildIndexFromDocuments(
-  Map<String, String> docs, {
+  Map<String, ({String text, String uri})> docs, {
   required String apiKey,
   int maxTokens = 256,
   int overlapTokens = 50,
@@ -17,8 +17,14 @@ Future<List<EmbeddingRecord>> buildIndexFromDocuments(
 
   // 1. Chunk all documents
   final allChunks = <DocumentChunk>[];
-  docs.forEach((docId, text) {
-    final chunks = chunkDocument(documentId: docId, text: text, maxTokens: maxTokens, overlapTokens: overlapTokens);
+  docs.forEach((docId, doc) {
+    final chunks = chunkDocument(
+      documentId: docId,
+      text: doc.text,
+      uri: doc.uri,
+      maxTokens: maxTokens,
+      overlapTokens: overlapTokens,
+    );
     allChunks.addAll(chunks);
   });
 

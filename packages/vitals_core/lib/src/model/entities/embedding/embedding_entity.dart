@@ -13,6 +13,7 @@ class _EmbeddingEntity {
   late int chunkIndex;
   late String text;
   late String model;
+  late String uri;
 }
 
 extension EmbeddingEntityExt on EmbeddingEntity {
@@ -23,5 +24,6 @@ extension EmbeddingEntityExt on EmbeddingEntity {
         chunkIndex: chunkIndex,
         text: text,
         model: model,
+        uri: uri,
       );
 }

@@ -12,4 +12,4 @@ final kSchemasEntities = List<SchemaObject>.unmodifiable(
 
 const kRealmName = 'realm';
 
-const kSchemaVersion = 2;
+const kSchemaVersion = 3;
